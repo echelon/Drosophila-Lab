@@ -1,0 +1,32 @@
+# Generated files
+*~
+*.bak
+*.[oa]
+*.so
+*.os
+*.pyc
+
+# SCons and SWIG
+.sconsign.dblite
+*_wrap.cc
+*_wrap.h
+
+# Build dir
+build/*
+
+# Compiled applications
+exampleApp
+mainApp
+a.out
+
+# Cached files
+cache.xml
+cache.html
+cache.html
+cache.rdf
+
+# Temp
+parser/
+
+# Debugging
+core
