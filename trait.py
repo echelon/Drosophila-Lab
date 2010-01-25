@@ -25,12 +25,13 @@
 
 class Trait(object):
 
-	def __init__(self, name, desc = None):
+	def __init__(self, name, abbr, desc = None):
 
 		self.name = name
+		self.abbr = abbr # Simplifies external dictionary lookup of Trait
 		self.description = desc
 
-		self.alleles = []
+		self.alleles = {}
 
 	def addAllele(self, allele):
 		"""Add an allele for this trait.
@@ -42,15 +43,21 @@ class Trait(object):
 		if type(allele) != Allele:
 			raise TypeError, "Must add an Allele object."
 
-		for al in self.alleles:
-			if allele.name == al.name or allele.abbr == al.abbr:
-				raise Exception, \
-					"Allele '%s' already exists for trait '%s'." % (
-						allele.name, self.name
-					)
+		if allele.abbr in self.alleles:
+			raise Exception, \
+				"Allele '%s' already exists for trait '%s'." % (
+					allele.name, self.name
+				)
 
-		self.alleles.append(allele)
+		self.alleles[allele.abbr] = allele
 		allele.trait = self
+
+	def getAllele(self, abbr):
+		"""Get an allele of the trait by its abbreviation."""
+		if abbr not in self.alleles:
+			return False
+
+		return self.alleles[abbr]
 
 	def __repr__(self):
 		"""String representation of a Trait."""

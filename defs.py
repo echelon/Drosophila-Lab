@@ -25,70 +25,98 @@
 from trait import Trait
 from allele import Allele
 
-traits = {
-	'bristle' :		Trait('Bristle'),
-	'body_color':	Trait('Body Color'),
-	'antennae':		Trait('Antennae'),
-	'eye_color':	Trait('Eye Color'),
-	'eye_shape':	Trait('Eye Shape'),
-	'wing_size':	Trait('Wing Size'),
-	'wing_shape':	Trait('Wing Shape'),
-	'wing_vein':	Trait('Wing Vein'),
-	'wing_angle':	Trait('Wing Angle'),
+# TODO: Just creating these should register them with the dictionary. 
+t = {
+	'bristle' :		Trait('Bristle', 'br'),
+	'body_color':	Trait('Body Color', 'bc'),
+	'antennae':		Trait('Antennae', 'an'),
+	'eye_color':	Trait('Eye Color', 'ec'),
+	'eye_shape':	Trait('Eye Shape', 'es'),
+	'wing_size':	Trait('Wing Size', 'wsz'),
+	'wing_shape':	Trait('Wing Shape', 'wsh'),
+	'wing_vein':	Trait('Wing Vein', 'wv'),
+	'wing_angle':	Trait('Wing Angle', 'wa'),
 }
 
-alleles = {
+# TODO: For all non-wildtype, a dictionary should be created for lookup. 
+a = {
 	# Bristle
-	'bristle+':		Allele('Wild Type', '+', traits['bristle']),
-	'forked':		Allele('Forked', 'F', traits['bristle']),
-	'Shaven':		Allele('Shaven', 'SV', traits['bristle']),
-	'Singed':		Allele('Singed', 'SN', traits['bristle']),
-	'Spineless':	Allele('Spineless', 'SS', traits['bristle']),
-	'Stubble':		Allele('Stubble', 'SB', traits['bristle']),
+	'bristle+':		Allele('Wild Type', '+', t['bristle']),
+	'forked':		Allele('Forked', 'F', t['bristle']),
+	'Shaven':		Allele('Shaven', 'SV', t['bristle']),
+	'Singed':		Allele('Singed', 'SN', t['bristle']),
+	'Spineless':	Allele('Spineless', 'SS', t['bristle']),
+	'Stubble':		Allele('Stubble', 'SB', t['bristle']),
 	# Body Color
-	'body_color+':	Allele('Wild Type', '+', traits['body_color']),
-	'black':		Allele('Black', 'BL', traits['body_color']),
-	'ebony':		Allele('Ebony', 'E', traits['body_color']),
-	'sable':		Allele('Sable', 'S', traits['body_color']),
-	'tan':			Allele('Tan', 'T', traits['body_color']),
-	'yellow':		Allele('Yellow', 'Y', traits['body_color']),
+	'body_color+':	Allele('Wild Type', '+', t['body_color']),
+	'black':		Allele('Black', 'BL', t['body_color']),
+	'ebony':		Allele('Ebony', 'E', t['body_color']),
+	'sable':		Allele('Sable', 'S', t['body_color']),
+	'tan':			Allele('Tan', 'T', t['body_color']),
+	'yellow':		Allele('Yellow', 'Y', t['body_color']),
 	# Antennae
-	'antennae+':	Allele('Wild Type', '+', traits['antennae']),
-	'aristapedia':	Allele('Aristapedia', 'AR', traits['antennae']),
+	'antennae+':	Allele('Wild Type', '+', t['antennae']),
+	'aristapedia':	Allele('Aristapedia', 'AR', t['antennae']),
 	# Eye Color
-	'eye_color+':	Allele('Wild Type', '+', traits['eye_color']),
-	'brown':		Allele('Brown', 'BW', traits['eye_color']),
-	'purple':		Allele('Purple', 'PR', traits['eye_color']),
-	'sepia':		Allele('Sepia', 'SE', traits['eye_color']),
-	'white':		Allele('White', 'W', traits['eye_color']),
+	'eye_color+':	Allele('Wild Type', '+', t['eye_color']),
+	'brown':		Allele('Brown', 'BW', t['eye_color']),
+	'purple':		Allele('Purple', 'PR', t['eye_color']),
+	'sepia':		Allele('Sepia', 'SE', t['eye_color']),
+	'white':		Allele('White', 'W', t['eye_color']),
 	# Eye Shape
-	'eye_shape+':	Allele('Wild Type', '+', traits['eye_shape']),
-	'bar':			Allele('Bar', 'B', traits['eye_shape']),
-	'eyeless':		Allele('Eyeless', 'EY', traits['eye_shape']),
-	'lobe':			Allele('Lobe', 'L', traits['eye_shape']),
-	'star':			Allele('Star', 'ST', traits['eye_shape']),
+	'eye_shape+':	Allele('Wild Type', '+', t['eye_shape']),
+	'bar':			Allele('Bar', 'B', t['eye_shape']),
+	'eyeless':		Allele('Eyeless', 'EY', t['eye_shape']),
+	'lobe':			Allele('Lobe', 'L', t['eye_shape']),
+	'star':			Allele('Star', 'ST', t['eye_shape']),
 	# Wing Size
-	'wing_size+':	Allele('Wild Type', '+', traits['wing_size']),
-	'apterous':		Allele('Apterous', 'AP', traits['wing_size']),
-	'miniature':	Allele('Miniature', 'M', traits['wing_size']),
-	'vestigial':	Allele('Vestigial', 'VG', traits['wing_size']),
+	'wing_size+':	Allele('Wild Type', '+', t['wing_size']),
+	'apterous':		Allele('Apterous', 'AP', t['wing_size']),
+	'miniature':	Allele('Miniature', 'M', t['wing_size']),
+	'vestigial':	Allele('Vestigial', 'VG', t['wing_size']),
 	# Wing Shape
-	'wing_shape+':	Allele('Wild Type', '+', traits['wing_shape']),
-	'curly':		Allele('Curly', 'CY', traits['wing_shape']),
-	'curved':		Allele('Curved', 'C', traits['wing_shape']),
-	'dumpy':		Allele('Dumpy', 'DP', traits['wing_shape']),
-	'scalloped':	Allele('Scalloped', 'SD', traits['wing_shape']),
+	'wing_shape+':	Allele('Wild Type', '+', t['wing_shape']),
+	'curly':		Allele('Curly', 'CY', t['wing_shape']),
+	'curved':		Allele('Curved', 'C', t['wing_shape']),
+	'dumpy':		Allele('Dumpy', 'DP', t['wing_shape']),
+	'scalloped':	Allele('Scalloped', 'SD', t['wing_shape']),
 	# Wing Vein 
-	'wing_vein+':	Allele('Wild Type', '+', traits['wing_vein']),
-	'crossveinless': Allele('Crossveinless', 'CV', traits['wing_vein']),
-	'incomplete':	Allele('Radius Incomplete', 'RI', traits['wing_vein']),
+	'wing_vein+':	Allele('Wild Type', '+', t['wing_vein']),
+	'crossveinless': Allele('Crossveinless', 'CV', t['wing_vein']),
+	'incomplete':	Allele('Radius Incomplete', 'RI', t['wing_vein']),
 	# Wing Angle
-	'wing_angle+':	Allele('Wild Type', '+', traits['wing_angle']),
-	'dichaete':		Allele('Dichaete', 'D', traits['wing_angle']),
-
+	'wing_angle+':	Allele('Wild Type', '+', t['wing_angle']),
+	'dichaete':		Allele('Dichaete', 'D', t['wing_angle']),
 }
 
+class defs(object):
+	"""Simply an accessor to the traits and alleles.
+	Do not instantiate. 
+
+		traits, alleles = defs.traits, defs.alleles
+
+		trait = defs.getAlleleByAbbr("D") # Returns "Dichaete"
+	"""
+
+	traits = t
+	alleles = a
+
+	def __init__(self):
+		raise Exception, "Cannot instantiate defs class."
+
+	@classmethod
+	def getAllele(cls, abbr):
+		"""Look up the allele by its abbreviation. NOTE: Cannot look up +!"""
+		if abbr == '+':
+			return False
+
+		abbr = abbr.upper()
+		for al in cls.alleles.values():
+			if al.abbr == abbr:
+				return al
+
+		return False
 
 def testGetPhenotype():
-
 	pass
+

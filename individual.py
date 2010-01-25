@@ -21,7 +21,11 @@
 #
 #	You should have received a copy of the GNU Affero General Public License
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 import random
+from allele import Allele
+from trait import Trait
+from defs import defs
 
 class Individual(object):
 
@@ -38,8 +42,38 @@ class Individual(object):
 			and (sex.upper() == 'FEMALE' or sex.upper == 'F')):
 				self.sex = 1
 
-		if chromosomes and len(chromosomes) == 2:
-			self.chromosomes = chromosomes
+		# XXX: Deprecated
+		#if chromosomes and len(chromosomes) == 2:
+		#	self.chromosomes = chromosomes
+
+	def setHomozygousFor(self, allele, trait = None):
+		"""Set the individual as homozygous for an allele of a trait."""
+		# TODO: THIS IS GOING TO BREAK THE MATE METHOD!!!!!
+
+		if type(trait) == Trait:
+			allele = trait.getAllele(allele)
+			return self.__doSetHomozygousFor(allele)
+
+		if type(allele) == Allele:
+			return self.__doSetHomozygousFor(allele)
+
+		if type(allele) == str:
+			allele = defs.getAllele(allele)
+			return self.__doSetHomozygousFor(allele)
+
+		return False # TODO: Raise exception? 
+
+
+	def __doSetHomozygousFor(self, allele):
+		"""Private method - sets homozygous for the allele."""
+		if type(allele) != Allele:
+			raise TypeError, \
+				"Allele was not an object or could not be looked up in dict."
+
+		abbr = allele.trait.abbr
+		self.chromosomes[0][abbr] = allele
+		self.chromosomes[1][abbr] = allele
+
 
 	def isMale(self):
 		"""Return true if individual is male, false if it is female."""
@@ -96,8 +130,8 @@ class Individual(object):
 		sexes = ['Male', 'Female']
 		ret = sexes[self.sex] + " <"
 		for gene in self.chromosomes[0].keys():
-			ret += str(self.chromosomes[0][gene]) + "/"
-			ret += str(self.chromosomes[1][gene]) + "; "
+			ret += str(self.chromosomes[0][gene].abbr) + "/"
+			ret += str(self.chromosomes[1][gene].abbr) + "; "
 
 		ret = ret[:-2] + ">"
 		return ret

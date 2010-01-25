@@ -42,3 +42,4 @@ class Allele(object):
 		if self.trait:
 			return "Allele %s <%s/%s>" % (self.abbr, self.trait.name, self.name)
 		return "Allele %s <NoTrait/%s>" % (self.abbr, self.name)
+

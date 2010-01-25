@@ -101,7 +101,7 @@ from individual import Individual
 from statistics import Statistics
 from trait import Trait
 from allele import Allele
-from defs import traits, alleles
+from defs import defs
 
 def main():
 
@@ -116,13 +116,18 @@ def main():
 		{'gene1': 'a', 'gene2:': 'b'}
 	]
 
-	male = Individual('male', chromosMale)
-	female = Individual('female', chromosFemale)
+	male = Individual('male')
+	female = Individual('female')
 
 
 	print male
 	print female
 	print ""
+
+	male.setHomozygousFor("F")
+	male.setHomozygousFor("BL")
+
+	print male
 
 	#offspring = male.mate(female)
 
@@ -132,9 +137,11 @@ def main():
 	#s = Statistics(offspring)
 	#s.getStats()
 
-	print traits
-	print ""
-	print alleles
+	print defs.getAllele("y")
+
+	#print defs.traits
+	#print ""
+	#print defs.alleles
 
 
 if __name__ == '__main__': main()
