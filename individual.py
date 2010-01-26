@@ -29,22 +29,19 @@ from defs import defs
 
 class Individual(object):
 
-	def __init__(self, sex = None, chromosomes = None):
-		"""Constructor. Sex and genotype are optionally specifiable."""
+	def __init__(self, sex = None):
+		"""Constructor. Sex is optionally specifiable."""
 
 		self.sex = 0	# 0 = male, 1 = female
 
-		self.chromosomes = range(2)
+		# TODO: Rename 'traits' since there will be chromosome-linked features 
+		self.chromosomes = range(2) 
 		self.chromosomes[0] = {}
 		self.chromosomes[1] = {}
 
 		if sex == 1 or (type(sex) == str \
 			and (sex.upper() == 'FEMALE' or sex.upper == 'F')):
 				self.sex = 1
-
-		# XXX: Deprecated
-		#if chromosomes and len(chromosomes) == 2:
-		#	self.chromosomes = chromosomes
 
 	def setHomozygousFor(self, allele, trait = None):
 		"""Set the individual as homozygous for an allele of a trait."""
@@ -63,6 +60,9 @@ class Individual(object):
 
 		return False # TODO: Raise exception? 
 
+	def setHeterozygousFor(self):
+		# TODO ? (self, allele, trait, chromoPairNum)
+		pass
 
 	def __doSetHomozygousFor(self, allele):
 		"""Private method - sets homozygous for the allele."""
@@ -77,6 +77,7 @@ class Individual(object):
 
 	def isMale(self):
 		"""Return true if individual is male, false if it is female."""
+		# TODO: chromosome-based determinance
 		return (self.sex == 0)
 
 	def isDead(self):
@@ -86,10 +87,9 @@ class Individual(object):
 	def mate(self, o, numOffspring = 1000):
 		"""Mate the individual with another from the opposite sex."""
 		if self.sex == o.sex:
-			# The two are of the same sex -- TODO: exception
-			return False
+			raise Exception, "Cannot mate two members of the same sex."
 
-		# Vary the offspring slightly 
+		# Vary the number of offspring slightly 
 		diff = int(random.gauss(0, 12))
 		numOffspring += diff
 
@@ -103,13 +103,33 @@ class Individual(object):
 				{},
 			]
 
-			for gene in self.chromosomes[0].keys():
+			indiv = Individual(sex)
+
+			# Get a union of specific traits between the parents
+			traits = set.union(
+						set(self.chromosomes[0].keys()), 
+						set(self.chromosomes[1].keys()), 
+						set(o.chromosomes[0].keys()), 
+						set(o.chromosomes[1].keys()),
+			)
+
+			for tr in traits:
 				# Law of Segregation - 
 				# each parent passes on one of its alleles at random
-				chromos[0][gene] = self.chromosomes[random.randint(0,1)][gene]
-				chromos[1][gene] = o.chromosomes[random.randint(0,1)][gene]
 
-			indiv = Individual(sex, chromos)
+				r = random.randint(0,1)
+				if tr in self.chromosomes[r]:
+					chromos[0][tr] = self.chromosomes[r][tr]
+				else:
+					chromos[0][tr] = defs.getWildtype(tr)
+
+				r = random.randint(0,1)
+				if tr in o.chromosomes[r]:
+					chromos[1][tr] = o.chromosomes[r][tr]
+				else:
+					chromos[1][tr] = defs.getWildtype(tr)
+
+			indiv.chromosomes = chromos
 			offspring.append(indiv)
 
 		return offspring
@@ -128,7 +148,13 @@ class Individual(object):
 	def __repr__(self):
 		"""String representation of the individual"""
 		sexes = ['Male', 'Female']
-		ret = sexes[self.sex] + " <"
+		ret = sexes[self.sex]
+
+		if not self.chromosomes[0]:
+			ret += " <+>"
+			return ret
+
+		ret += " <"
 		for gene in self.chromosomes[0].keys():
 			ret += str(self.chromosomes[0][gene].abbr) + "/"
 			ret += str(self.chromosomes[1][gene].abbr) + "; "

@@ -33,6 +33,8 @@ Tasks -
 
 2) Make sure same genotype (a/A == A/a) is easy to use in calculations. 
 
+	OR sort them. 
+
 3) Create "chromosome", "gene", and/or "allele" classes?
 	
 	Perhaps a "GenePair" object that can easily convert a/A to A/a or some
@@ -107,27 +109,34 @@ def main():
 
 	generations = []
 
-	chromosMale = [
-		{'gene1': 'A', 'gene2:': 'b'},
-		{'gene1': 'a', 'gene2:': 'b'}
-	]
-	chromosFemale = [
-		{'gene1': 'A', 'gene2:': 'b'},
-		{'gene1': 'a', 'gene2:': 'b'}
-	]
-
 	male = Individual('male')
 	female = Individual('female')
 
+	print ""
 
 	print male
 	print female
 	print ""
 
+	#print defs.getAllele("y")
+
 	male.setHomozygousFor("F")
 	male.setHomozygousFor("BL")
 
+	#female.setHomozygousFor("SV")
+	#female.setHomozygousFor("AR")
+	#female.setHomozygousFor("E")
+
 	print male
+	print female
+	print ""
+
+	offspring = male.mate(female)
+
+	print "====="
+	print "" 
+	print offspring[0:4]
+
 
 	#offspring = male.mate(female)
 
@@ -137,7 +146,6 @@ def main():
 	#s = Statistics(offspring)
 	#s.getStats()
 
-	print defs.getAllele("y")
 
 	#print defs.traits
 	#print ""

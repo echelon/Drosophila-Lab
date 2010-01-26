@@ -59,6 +59,10 @@ class Trait(object):
 
 		return self.alleles[abbr]
 
+	def getWildtype(self):
+		"""Return the wildtype for the trait."""
+		return self.alleles['+']
+
 	def __repr__(self):
 		"""String representation of a Trait."""
 		return "Trait <%s>" % self.name

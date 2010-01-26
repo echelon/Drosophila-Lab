@@ -26,6 +26,7 @@ from trait import Trait
 from allele import Allele
 
 # TODO: Just creating these should register them with the dictionary. 
+# XXX: Note - the dictionary keys here are NOT NOT NOT abbreviations used 
 t = {
 	'bristle' :		Trait('Bristle', 'br'),
 	'body_color':	Trait('Body Color', 'bc'),
@@ -95,7 +96,9 @@ class defs(object):
 
 		traits, alleles = defs.traits, defs.alleles
 
-		trait = defs.getAlleleByAbbr("D") # Returns "Dichaete"
+		trait = defs.getAllele("D") # Returns "Dichaete"
+
+		trait = defs.getWildtype("BR") # Returns the Bristle wildtype
 	"""
 
 	traits = t
@@ -111,11 +114,27 @@ class defs(object):
 			return False
 
 		abbr = abbr.upper()
-		for al in cls.alleles.values():
+		for al in cls.alleles.values():  # TODO: Dict, not loop
 			if al.abbr == abbr:
 				return al
 
 		return False
+
+	@classmethod
+	def getWildtype(cls, abbr):
+		"""Look up the wildtype for a trait by the trait's abbreviation."""
+		abbr = abbr.lower()
+
+		trait = None
+		for tr in cls.traits.values():	# TODO: Dict, not loop
+			if tr.abbr == abbr:
+				trait = tr
+
+		if not trait:
+			return False
+
+		return trait.getWildtype()
+
 
 def testGetPhenotype():
 	pass
