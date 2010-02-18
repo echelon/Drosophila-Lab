@@ -28,6 +28,7 @@ from trait import Trait
 from defs import defs
 
 from chromoset import HaploSet, DiploSet
+from gamete import Gamete
 
 class Individual(object):
 
@@ -53,6 +54,55 @@ class Individual(object):
 		"""Return true if individual is male, false if it is female."""
 		# TODO: chromosome-based determinance
 		return (self.sex == 'm')
+
+	def mateMany(self, o, numOffspring = 1000):
+
+		# Vary the number of offspring slightly 
+		diff = int(random.gauss(0, 12))
+		numOffspring += diff
+
+		progeny = []
+		for i in range(numOffspring):
+			progeny.append(self.mate(other))
+
+		return progeny
+
+	def getGamete(self):
+
+		# XXX: Males do not cross over.
+		# XXX: Produce 4, but only return 1. 
+
+		nsex = 'f'
+		hap = HaploSet()
+
+		# XXX: Males do not cross over.
+		# Also, there's a 50/50 chance for male returning 'X' or 'Y' chromosome.		
+		if self.isMale():
+
+			for i in range(4):
+				rand = random.randint(0, 1)
+				if i == 0 and rand == 1:
+					gamSex = 'm'
+				hap[i] = self.chromos[rand] 
+
+			if random.randint(0, 1):
+				nsex = 'm'
+
+		gam = Gamete(hap, nsex)
+
+		return gamete
+
+	def mate(self, o):
+		"""Mate the individual with another from the opposite sex."""
+		if self.sex == o.sex:
+			raise Exception, "Cannot mate two members of the same sex."
+
+		g1 = self.getGamete()
+		g2 = o.getGamete()
+
+		return g1.fuze(g2)
+
+
 
 
 	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
@@ -95,56 +145,6 @@ class Individual(object):
 	def isDead(self):
 		"""Check for the presence of two lethal alleles."""
 		return False # TODO
-
-	def mate(self, o, numOffspring = 1000):
-		"""Mate the individual with another from the opposite sex."""
-		if self.sex == o.sex:
-			raise Exception, "Cannot mate two members of the same sex."
-
-		# Vary the number of offspring slightly 
-		diff = int(random.gauss(0, 12))
-		numOffspring += diff
-
-		# Produce each of the offspring
-		offspring = []
-		for i in range(numOffspring):
-			# Sex is random - TODO: is there a chromosomal way of doing this?
-			sex = random.randint(0, 1)
-			chromos = [
-				{},
-				{},
-			]
-
-			indiv = Individual(sex)
-
-			# Get a union of specific traits between the parents
-			traits = set.union(
-						set(self.chromosomes[0].keys()), 
-						set(self.chromosomes[1].keys()), 
-						set(o.chromosomes[0].keys()), 
-						set(o.chromosomes[1].keys()),
-			)
-
-			for tr in traits:
-				# Law of Segregation - 
-				# each parent passes on one of its alleles at random
-
-				r = random.randint(0,1)
-				if tr in self.chromosomes[r]:
-					chromos[0][tr] = self.chromosomes[r][tr]
-				else:
-					chromos[0][tr] = defs.getWildtype(tr)
-
-				r = random.randint(0,1)
-				if tr in o.chromosomes[r]:
-					chromos[1][tr] = o.chromosomes[r][tr]
-				else:
-					chromos[1][tr] = defs.getWildtype(tr)
-
-			indiv.chromosomes = chromos
-			offspring.append(indiv)
-
-		return offspring
 
 
 	def getGenotypeStr(self):
