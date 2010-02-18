@@ -27,11 +27,15 @@ class Trait(object):
 
 	def __init__(self, name, abbr, desc = None):
 
+		from defs import defs
+
 		self.name = name
 		self.abbr = abbr # Simplifies external dictionary lookup of Trait
 		self.description = desc
 
 		self.alleles = {}
+
+		defs.addTrait(self)
 
 	def addAllele(self, allele):
 		"""Add an allele for this trait.

@@ -120,6 +120,8 @@ def main():
 
 	#print defs.getAllele("y")
 
+	print defs.alleles
+
 	male.setHomozygousFor("F")
 	male.setHomozygousFor("BL")
 

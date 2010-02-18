@@ -25,6 +25,67 @@
 from trait import Trait
 from allele import Allele
 
+class defs(object):
+	"""Simply an accessor to the traits and alleles.
+	Do not instantiate. 
+
+		traits, alleles = defs.traits, defs.alleles
+
+		trait = defs.getAllele("D") # Returns "Dichaete"
+
+		trait = defs.getWildtype("BR") # Returns the Bristle wildtype
+	"""
+
+	# Dictionary lookup by abbreviation for all traits and alleles
+	traits = {}
+	alleles = {}
+	wildtypeAlleles = {}
+
+	def __init__(self):
+		raise Exception, "Cannot instantiate defs class."
+
+	@classmethod
+	def addTrait(cls, trait):
+		cls.traits[trait.abbr] = trait
+
+	@classmethod
+	def addAllele(cls, allele):
+		print "Adding allele"
+		cls.alleles[allele.abbr] = alleles
+
+	@classmethod
+	def addWildtype(cls, wildtype):
+		cls.wildtypeAlleles[wildtype.abbr] = wildtype
+
+	@classmethod
+	def getAllele(cls, abbr):
+		"""Look up the allele by its abbreviation. NOTE: Cannot look up +!"""
+		if abbr == '+':
+			return False
+
+		abbr = abbr.upper()
+		for al in cls.alleles.values():  # TODO: Dict, not loop
+			if al.abbr == abbr:
+				return al
+
+		return False
+
+	@classmethod
+	def getWildtype(cls, abbr):
+		"""Look up the wildtype for a trait by the trait's abbreviation."""
+		abbr = abbr.lower()
+
+		trait = None
+		for tr in cls.traits.values():	# TODO: Dict, not loop
+			if tr.abbr == abbr:
+				trait = tr
+
+		if not trait:
+			return False
+
+		return trait.getWildtype()
+
+
 # TODO: Just creating these should register them with the dictionary. 
 # XXX: Note - the dictionary keys here are NOT NOT NOT abbreviations used 
 t = {
@@ -38,6 +99,7 @@ t = {
 	'wing_vein':	Trait('Wing Vein', 'wv'),
 	'wing_angle':	Trait('Wing Angle', 'wa'),
 }
+
 
 # TODO: For all non-wildtype, a dictionary should be created for lookup. 
 a = {
@@ -90,50 +152,7 @@ a = {
 	'dichaete':		Allele('Dichaete', 'D', t['wing_angle']),
 }
 
-class defs(object):
-	"""Simply an accessor to the traits and alleles.
-	Do not instantiate. 
 
-		traits, alleles = defs.traits, defs.alleles
-
-		trait = defs.getAllele("D") # Returns "Dichaete"
-
-		trait = defs.getWildtype("BR") # Returns the Bristle wildtype
-	"""
-
-	traits = t
-	alleles = a
-
-	def __init__(self):
-		raise Exception, "Cannot instantiate defs class."
-
-	@classmethod
-	def getAllele(cls, abbr):
-		"""Look up the allele by its abbreviation. NOTE: Cannot look up +!"""
-		if abbr == '+':
-			return False
-
-		abbr = abbr.upper()
-		for al in cls.alleles.values():  # TODO: Dict, not loop
-			if al.abbr == abbr:
-				return al
-
-		return False
-
-	@classmethod
-	def getWildtype(cls, abbr):
-		"""Look up the wildtype for a trait by the trait's abbreviation."""
-		abbr = abbr.lower()
-
-		trait = None
-		for tr in cls.traits.values():	# TODO: Dict, not loop
-			if tr.abbr == abbr:
-				trait = tr
-
-		if not trait:
-			return False
-
-		return trait.getWildtype()
 
 
 def testGetPhenotype():

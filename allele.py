@@ -27,6 +27,7 @@ class Allele(object):
 	def __init__(self, name, abbr, trait, image = None):
 
 		from trait import Trait
+		from defs import defs
 
 		if type(trait) != Trait:
 			raise TypeError, "Trait must be a Trait object."
@@ -36,6 +37,13 @@ class Allele(object):
 		self.trait = trait
 
 		trait.addAllele(self)
+		if self.isWildtype():
+			defs.addWildtype(self)
+		else:
+			defs.addTrait(self)
+
+	def isWildtype(self):
+		return self.abbr == '+'
 
 	def __repr__(self):
 		"""String representation of Allele."""
