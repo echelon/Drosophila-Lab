@@ -1,33 +1,39 @@
-
+from chromoset import HaploSet, DiploSet
 
 class Gamete(object):
 
-	def __init__(self, chromos, sex):
+	"""This class represents a haploid gamete."""
 
-		if type(chromos) != list || len(chromos) != 4:
-			raise Exception, "Chromosome length for gamete is wrong." 
+	def __init__(self, genome, sex):
 
-		if sex != 'f' && sex != 'm':
+		if type(genome) != HaploSet:
+			raise Exception, "Genome must be haploid."
+
+		if sex != 'f' and sex != 'm':
 			raise Exception, "Improper sex parameter."
 
-		self.chromos = chromos
+		self.genome = genome
 		self.sex = sex
 
 	def fuze(self, gam):
 		"""New individuals are produced by the fusion of two gametes."""
 
+		from individual import Individual
+
+		if type(gam) != Gamete:
+			raise Exception, "Gamete must fuze with another gamete."
+
 		# New individual info
-		newChromos = [0]* 4
+		newGenome = DiploSet()
 		newSex = 'm'
 
 		# Two haploids --> diploid
 		# XXX: DO NOT SUPPORT CHROMOSOME DUPLICATION / COPY ERRORS.
-		# Chromosome structure for diploids is: chromos[chromoNum][copyNum]
-		for i in range(len(newChromos)):
-			newChromos[i][0] = self.chromos
-			newChromos[i][1] = gam.chromos
+		newGenome[0] = self.genome
+		newGenome[1] = gam.genome
 
 		# X-balance sex system 
+		# XXX: Sex chromosome information is passed in by a string
 		xCnt = 0
 		if gam.sex == 'f':
 			xCnt += 1
@@ -37,6 +43,9 @@ class Gamete(object):
 		if xCnt >= 2:
 			newSex = 'f'
 
-		return Indiv(newChromos, newSex)
+		return Individual(newGenome, newSex)
 
+	def __repr__(self):
+
+		return "<%s gamete>" % self.sex.upper()
 

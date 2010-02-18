@@ -27,21 +27,37 @@ from allele import Allele
 from trait import Trait
 from defs import defs
 
+from chromoset import HaploSet, DiploSet
+
 class Individual(object):
 
-	def __init__(self, sex = None):
+	def __init__(self, chromos = None, sex = None):
 		"""Constructor. Sex is optionally specifiable."""
 
-		self.sex = 0	# 0 = male, 1 = female
+		if not sex:
+			sex = 'm'
 
-		# TODO: Rename 'traits' since there will be chromosome-linked features 
-		self.chromosomes = range(2) 
-		self.chromosomes[0] = {}
-		self.chromosomes[1] = {}
+		if not chromos:
+			chromos = DiploidSet()
 
-		if sex == 1 or (type(sex) == str \
-			and (sex.upper() == 'FEMALE' or sex.upper == 'F')):
-				self.sex = 1
+		if sex != 'm' and sex != 'f':
+			raise Exception, "Invalid sex"
+
+		if type(chromos) != DiploSet:
+			raise Exception, "Invalid chromos"
+
+		self.chromos = chromos
+		self.sex = sex
+
+	def isMale(self):
+		"""Return true if individual is male, false if it is female."""
+		# TODO: chromosome-based determinance
+		return (self.sex == 'm')
+
+
+	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
+	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
+	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
 
 	def setHomozygousFor(self, allele, trait = None):
 		"""Set the individual as homozygous for an allele of a trait."""
@@ -75,10 +91,6 @@ class Individual(object):
 		self.chromosomes[1][abbr] = allele
 
 
-	def isMale(self):
-		"""Return true if individual is male, false if it is female."""
-		# TODO: chromosome-based determinance
-		return (self.sex == 0)
 
 	def isDead(self):
 		"""Check for the presence of two lethal alleles."""
@@ -145,20 +157,20 @@ class Individual(object):
 		return st
 
 
-	def __repr__(self):
-		"""String representation of the individual"""
-		sexes = ['Male', 'Female']
-		ret = sexes[self.sex]
-
-		if not self.chromosomes[0]:
-			ret += " <+>"
-			return ret
-
-		ret += " <"
-		for gene in self.chromosomes[0].keys():
-			ret += str(self.chromosomes[0][gene].abbr) + "/"
-			ret += str(self.chromosomes[1][gene].abbr) + "; "
-
-		ret = ret[:-2] + ">"
-		return ret
-
+	#def __repr__(self):
+	#	"""String representation of the individual"""
+	#	sexes = ['Male', 'Female']
+	#	ret = sexes[self.sex]
+	#
+	#	if not self.chromosomes[0]:
+	#		ret += " <+>"
+	#		return ret
+	#
+	#	ret += " <"
+	#	for gene in self.chromosomes[0].keys():
+	#		ret += str(self.chromosomes[0][gene].abbr) + "/"
+	#		ret += str(self.chromosomes[1][gene].abbr) + "; "
+	#
+	#	ret = ret[:-2] + ">"
+	#	return ret
+	#
