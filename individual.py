@@ -33,27 +33,82 @@ from gamete import Gamete
 class Individual(object):
 
 	def __init__(self, chromos = None, sex = None):
-		"""Constructor. Sex is optionally specifiable."""
+		"""Constructor. 
+		If sex is specified, it will force the sex of the individual and REMOVE
+		any sex chromosomes, resetting them to WILDTYPE."""
 
-		if not sex:
-			sex = 'm'
+		if sex and (sex != 'm' and sex != 'f'):
+			raise Exception, "Invalid sex parameter"
 
-		if not chromos:
-			chromos = DiploidSet()
+		if chromos and type(chromos) != DiploSet:
+			raise Exception, "Invalid DiploSet provided for individual"
 
-		if sex != 'm' and sex != 'f':
-			raise Exception, "Invalid sex"
-
-		if type(chromos) != DiploSet:
-			raise Exception, "Invalid chromos"
+		if sex and chromos:
+			raise Exception, "Cannot supply both DiploSet and sex parameter."
 
 		self.chromos = chromos
+		self.sex = None
+
+		if not sex:
+			sex = 'f'
+
+		# Set up the object based on input
+		if chromos:
+			self.__calcSex()
+		else:
+			self.chromos = DiploSet()
+			self.__setSex(sex)
+
+	def __setSex(self, sex):
+		"""Set the sex of the individual.
+		Removes any genes set for chromosome 1, resetting to wild type!!"""
+
+		if sex != 'm' and sex != 'f':
+			raise Exception, "Invalid sex specified."
+
 		self.sex = sex
 
-	def isMale(self):
-		"""Return true if individual is male, false if it is female."""
-		# TODO: chromosome-based determinance
-		return (self.sex == 'm')
+		# Remove all genes from both pairs of Chromosome I
+		self.chromos[0][0] = []
+		self.chromos[1][0] = []
+
+		# First chromosome 1 is always X, Second is either X or Y
+		self.chromos[0][0].append('xch')
+		if sex == 'm':
+			self.chromos[1][0].append('ych')
+		else:
+			self.chromos[1][0].append('xch')
+
+	def __calcSex(self):
+		"""Calculate sex based on X-balance system and cache the result."""
+		cnt = 0
+		if 'xch' in self.chromos[0][0]:
+			cnt += 1
+		if 'xch' in self.chromos[1][0]:
+			cnt += 1
+
+		if cnt >= 2:
+			self.sex = 'f'
+		else:
+			self.sex = 'm'
+		
+	def isFemale(self):
+		"""Test if individual is female."""
+		if not self.sex:
+			self.__calcXBalance()
+		return (self.sex == 'f')
+
+	def getSex(self):
+		"""Return sex string"""		
+		if not self.sex:
+			self.__calcSex()
+		return self.sex
+
+	def __repr__(self):
+		ret = "<individual %s\n" % self.getSex()
+		ret += str(self.chromos)
+		return ret
+
 
 	def mateMany(self, o, numOffspring = 1000):
 

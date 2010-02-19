@@ -1,5 +1,12 @@
 from chromoset import HaploSet, DiploSet
 
+###
+# Usage
+#	g1 = Gamete(HaploSet([...])) # TODO: Do away with sex parameter
+#	g2 = Gamete(HaploSet([...]))
+#
+#	indiv = g1.fuze(g2)
+
 class Gamete(object):
 
 	"""This class represents a haploid gamete."""
