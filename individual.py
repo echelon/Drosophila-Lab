@@ -75,6 +75,18 @@ class Individual(object):
 	#                Gender-related methods                    #
 	# ======================================================== #
 
+	def isFemale(self):
+		"""Test if individual is female."""
+		if not self.sex:
+			self.__calcSex()
+		return (self.sex == 'f')
+
+	def getSex(self):
+		"""Return sex string."""		
+		if not self.sex:
+			self.__calcSex()
+		return self.sex
+
 	def __setSex(self, sex):
 		"""Used by the constructor to set the sex of the individual.
 		Removes any genes set for Chromosome I, resetting any traits present to 
@@ -119,18 +131,36 @@ class Individual(object):
 			self.sex = 'f'
 		else:
 			self.sex = 'm'
-		
-	def isFemale(self):
-		"""Test if individual is female."""
-		if not self.sex:
-			self.__calcSex()
-		return (self.sex == 'f')
 
-	def getSex(self):
-		"""Return sex string"""		
-		if not self.sex:
-			self.__calcSex()
-		return self.sex
+
+	# ======================================================== #
+	#              Gene-setting related methods                #
+	# ======================================================== #
+
+	def setHomozygousFor(self, allele):
+		"""Set the individual as homozygous for an allele of a trait."""
+
+		if type(allele) == str:
+			allele = defs.getAllele(allele)
+
+		return self.__doSetHomozygousFor(allele)
+
+
+	def __doSetHomozygousFor(self, allele):
+		"""Private method - sets homozygous for the allele."""
+		if type(allele) != Allele:
+			raise TypeError, \
+				"Allele was not an object or could not be looked up in dict."
+
+		abbr = allele.trait.abbr
+		self.chromosomes[0][abbr] = allele
+		self.chromosomes[1][abbr] = allele
+
+	def setWildtypeFor(self, trait):
+		"""Basically unsets any allele of a trait, returning to NULL/wildtype
+		state."""
+
+		pass
 
 
 	# ======================================================== #
@@ -208,36 +238,7 @@ class Individual(object):
 	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
 	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
 
-	def setHomozygousFor(self, allele, trait = None):
-		"""Set the individual as homozygous for an allele of a trait."""
-		# TODO: THIS IS GOING TO BREAK THE MATE METHOD!!!!!
 
-		if type(trait) == Trait:
-			allele = trait.getAllele(allele)
-			return self.__doSetHomozygousFor(allele)
-
-		if type(allele) == Allele:
-			return self.__doSetHomozygousFor(allele)
-
-		if type(allele) == str:
-			allele = defs.getAllele(allele)
-			return self.__doSetHomozygousFor(allele)
-
-		return False # TODO: Raise exception? 
-
-	def setHeterozygousFor(self):
-		# TODO ? (self, allele, trait, chromoPairNum)
-		pass
-
-	def __doSetHomozygousFor(self, allele):
-		"""Private method - sets homozygous for the allele."""
-		if type(allele) != Allele:
-			raise TypeError, \
-				"Allele was not an object or could not be looked up in dict."
-
-		abbr = allele.trait.abbr
-		self.chromosomes[0][abbr] = allele
-		self.chromosomes[1][abbr] = allele
 
 
 
@@ -275,7 +276,9 @@ class Individual(object):
 	#
 
 class Indiv(Individual):
-	"""This is a shortcut name for use in the console only.""""
-	pass
+	"""This is a shortcut name for use in the console only."""
+
+	def setWildFor(self, trait):
+		return self.setWildtypeFor(trait)
 
 

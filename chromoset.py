@@ -6,8 +6,10 @@
 # (potentially) For Southern Polytechnic State University
 #	http://www.spsu.edu
 #
-# Open Drosophila Lab is an open source reimplementation of Virtual FlyLab,
-# a for-pay resource by the California State University and Benjamin Cummings.
+# Open Drosophila Lab promotes the learning of basic non-Mendelian inheritance
+# and gene mapping by engaging students in designing genetic crosses. It is an 
+# open source reimplementation of Virtual FlyLab, a for-pay resource created by 
+# California State University and publisher Benjamin Cummings. 
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU Affero General Public License as
