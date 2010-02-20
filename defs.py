@@ -30,15 +30,15 @@ from gene import Trait, Allele
 #          TRAITS           #
 # ========================= #
 
-br = Trait('Bristle', 'br')
-bc = Trait('Body Color', 'bc')
-an = Trait('Antennae', 'an')
-ec = Trait('Eye Color', 'ec')
-es = Trait('Eye Shape', 'es')
-sz = Trait('Wing Size', 'sz')
-sh = Trait('Wing Shape', 'sh')
-vn = Trait('Wing Vein', 'vn')
-ag = Trait('Wing Angle', 'ag')
+br = Trait('Bristle', 'BR')
+bc = Trait('Body Color', 'BC')
+an = Trait('Antennae', 'AN')
+ec = Trait('Eye Color', 'EC')
+es = Trait('Eye Shape', 'ES')
+sz = Trait('Wing Size', 'SZ')
+sh = Trait('Wing Shape', 'SH')
+vn = Trait('Wing Vein', 'VN')
+ag = Trait('Wing Angle', 'AG')
 
 # ========================= #
 #          ALLELES          #

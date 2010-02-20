@@ -153,7 +153,7 @@ class Individual(object):
 		"""Basically unsets any allele of a trait, returning to NULL/wildtype
 		state."""
 
-		trait = Trait.get(traitAbbr.lower())
+		trait = Trait.get(traitAbbr.upper())
 
 		# Not very efficient -- don't rely on this
 		for al in trait.alleles.values():

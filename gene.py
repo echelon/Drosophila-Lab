@@ -98,7 +98,7 @@ class Trait(object):
 	@classmethod
 	def list(cls):
 		for tr in cls.traits.values():
-			print "(%s) %s" % (tr.abbr, tr.name)
+			print "(%s) %s" % (tr.abbr.lower(), tr.name)
 
 	def __init__(self, name, abbr, desc = None):
 		"""Trait CTOR."""
