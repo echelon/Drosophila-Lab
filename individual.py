@@ -57,14 +57,14 @@ class Individual(object):
 			raise Exception, "Cannot supply both DiploSet and sex parameter."
 
 		self.chromos = chromos
-		self.sex = None
+		self.sex = None 		# Cache of X-balance sex
 
 		if not sex:
 			sex = 'f'
 
 		# Set up the object based on input
 		if chromos:
-			self.__calcSex()
+			self.__cacheSex()
 		else:
 			self.chromos = DiploSet()
 			self.__setSex(sex)
@@ -77,13 +77,13 @@ class Individual(object):
 	def isFemale(self):
 		"""Test if individual is female."""
 		if not self.sex:
-			self.__calcSex()
+			self.__cacheSex()
 		return (self.sex == 'f')
 
 	def getSex(self):
 		"""Return sex string."""		
 		if not self.sex:
-			self.__calcSex()
+			self.__cacheSex()
 		return self.sex
 
 	def __setSex(self, sex):
@@ -113,7 +113,7 @@ class Individual(object):
 		else:
 			self.chromos[1][0].append('xch')
 
-	def __calcSex(self):
+	def __cacheSex(self):
 		"""Calculate sex based on X-balance system and cache the result.
 		This is used for the drosophila the user does not manually create (the 
 		progeny).
@@ -137,45 +137,50 @@ class Individual(object):
 	# ======================================================== #
 
 	def setAs(self, alleleAbbr):
-		"""Set HOMOZYGOUS for the allele, unless lethal.
+		"""Set HOMOZYGOUS for the allele, unless lethal or sex-linked.
 		Supply the allele abbreviation for lookup."""
-		
-		# TODO: Don't set homozygous if lethal or hemizygous
 
-		alleleAbbr = alleleAbbr.upper()
-
-		allele = Allele.get(alleleAbbr)
+		allele = Allele.get(alleleAbbr.upper())
 		chromo = allele.onChromo
 
+		# TODO: Don't set homozygous if lethal or hemizygous
 		if chromo in [2, 3, 4]:
-			self.chromos[0][chromo-1].append(alleleAbbr)
-			self.chromos[1][chromo-1].append(alleleAbbr)
+			self.chromos[0][chromo-1].append(allele.abbr)
+			self.chromos[1][chromo-1].append(allele.abbr)
 
 
-	def setHomozygousFor(self, allele):
-		"""Set the individual as homozygous for an allele of a trait."""
-
-		if type(allele) == str:
-			allele = defs.getAllele(allele)
-
-		return self.__doSetHomozygousFor(allele)
-
-
-	def __doSetHomozygousFor(self, allele):
-		"""Private method - sets homozygous for the allele."""
-		if type(allele) != Allele:
-			raise TypeError, \
-				"Allele was not an object or could not be looked up in dict."
-
-		abbr = allele.trait.abbr
-		self.chromosomes[0][abbr] = allele
-		self.chromosomes[1][abbr] = allele
-
-	def setWildtypeFor(self, trait):
+	def setWildFor(self, traitAbbr):
 		"""Basically unsets any allele of a trait, returning to NULL/wildtype
 		state."""
 
-		pass
+		trait = Trait.get(traitAbbr.lower())
+
+		# Not very efficient -- don't rely on this
+		for al in trait.alleles.values():
+			for i in range(4):
+				if al.abbr in self.chromos[0][i]:
+					self.chromos[0][i].remove(al.abbr)
+				if al.abbr in self.chromos[1][i]:
+					self.chromos[1][i].remove(al.abbr)
+
+	def reset(self):
+		"""Reset the individual to wildtype, only preserve sex."""
+		self.__cacheSex() # Make sure sex is cached
+
+		for i in range(4):
+			self.chromos[0][i] = []
+			self.chromos[1][i] = []
+
+		self.__setSex(self.sex)
+
+
+	# ======================================================== #
+	#                  Mating of individuals                   #
+	# ======================================================== #
+
+
+
+
 
 
 	# ======================================================== #
@@ -186,13 +191,6 @@ class Individual(object):
 		ret = "<individual %s\n" % self.getSex()
 		ret += str(self.chromos)
 		return ret
-
-
-	# ======================================================== #
-	#                  Mating of individuals                   #
-	# ======================================================== #
-
-
 
 
 
@@ -292,8 +290,5 @@ class Individual(object):
 
 class Indiv(Individual):
 	"""This is a shortcut name for use in the console only."""
-
-	def setWildFor(self, trait):
-		return self.setWildtypeFor(trait)
-
+	pass
 

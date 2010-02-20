@@ -41,6 +41,14 @@ class Allele(object):
 	def exists(cls, abbr):
 		return abbr in cls.alleles
 
+	@classmethod
+	def list(cls):
+		for tr in Trait.traits.values():
+			print "%s" % tr.name
+			for al in tr.alleles.values():
+				print "\t(%s) %s" % (al.abbr, al.name)
+			print ""
+
 	def __init__(self, name, abbr, trait, onChromo, mapPos, *effects):
 
 		if type(trait) != Trait:
@@ -86,6 +94,11 @@ class Trait(object):
 	@classmethod
 	def exists(cls, abbr):
 		return abbr in cls.traits
+
+	@classmethod
+	def list(cls):
+		for tr in cls.traits.values():
+			print "(%s) %s" % (tr.abbr, tr.name)
 
 	def __init__(self, name, abbr, desc = None):
 		"""Trait CTOR."""

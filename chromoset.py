@@ -91,10 +91,6 @@ class DiploSet(object):
 	def getPair2(self):
 		return self.chromos[1]
 
-	def appendBoth(self, key, val):
-		self.chromos[0][key].append(val)
-		self.chromos[1][key].append(val)
-
 	def __len__(self):
 		return 2
 

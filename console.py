@@ -11,3 +11,27 @@ from gene import Trait, Allele
 def clear():
 	print "\n"*40
 
+
+a, b = range(2)
+def create():
+	a = Indiv()
+
+	setA = [
+		'bl', 'y', 's', 't', # Body colors
+
+		'b', 'pr', 'ss', 'sv'
+	]
+	for x in setA:
+		a.setAs(x)
+
+	globals()['a'] = a
+	globals()['z'] = a
+
+	globals()['b'] = Indiv(sex='m')
+
+	return a
+
+create()
+
+
+
