@@ -26,7 +26,7 @@
 
 import random
 from gene import Trait, Allele
-from defs import defs
+import defs
 
 from chromoset import HaploSet, DiploSet
 from gamete import Gamete
@@ -135,6 +135,22 @@ class Individual(object):
 	# ======================================================== #
 	#              Gene-setting related methods                #
 	# ======================================================== #
+
+	def setAs(self, alleleAbbr):
+		"""Set HOMOZYGOUS for the allele, unless lethal.
+		Supply the allele abbreviation for lookup."""
+		
+		# TODO: Don't set homozygous if lethal or hemizygous
+
+		alleleAbbr = alleleAbbr.upper()
+
+		allele = Allele.get(alleleAbbr)
+		chromo = allele.onChromo
+
+		if chromo in [2, 3, 4]:
+			self.chromos[0][chromo-1].append(alleleAbbr)
+			self.chromos[1][chromo-1].append(alleleAbbr)
+
 
 	def setHomozygousFor(self, allele):
 		"""Set the individual as homozygous for an allele of a trait."""

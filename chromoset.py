@@ -31,7 +31,7 @@ class HaploSet(object):
 	def __init__(self, chromos = None):
 
 		if not chromos:
-			chromos = [[]]*4
+			chromos = [[] for i in range(4)]
 
 		if len(chromos) != 4:
 			raise Exception, "Improper number of chromosomes"
@@ -73,10 +73,10 @@ class DiploSet(object):
 		generated."""
 
 		if not pair1:
-			pair1 = [[]]*4
+			pair1 = [[] for i in range(4)]
 
 		if not pair2:
-			pair2 = [[]]*4
+			pair2 = [[] for i in range(4)]
 			
 		if len(pair1) != 4 or len(pair2) != 4:
 			raise Exception, "Improper number of chromosomes"
@@ -90,6 +90,10 @@ class DiploSet(object):
 
 	def getPair2(self):
 		return self.chromos[1]
+
+	def appendBoth(self, key, val):
+		self.chromos[0][key].append(val)
+		self.chromos[1][key].append(val)
 
 	def __len__(self):
 		return 2

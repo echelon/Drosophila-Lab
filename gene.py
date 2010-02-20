@@ -33,6 +33,14 @@ class Allele(object):
 	# Static dictionary of all alleles instantiated 
 	alleles = {}
 
+	@classmethod
+	def get(cls, abbr):
+		return cls.alleles[abbr]
+
+	@classmethod
+	def exists(cls, abbr):
+		return abbr in cls.alleles
+
 	def __init__(self, name, abbr, trait, onChromo, mapPos, *effects):
 
 		if type(trait) != Trait:
@@ -75,6 +83,10 @@ class Trait(object):
 	def get(cls, abbr):
 		return cls.traits[abbr]
 
+	@classmethod
+	def exists(cls, abbr):
+		return abbr in cls.traits
+
 	def __init__(self, name, abbr, desc = None):
 		"""Trait CTOR."""
 
@@ -90,8 +102,6 @@ class Trait(object):
 		"""Add an allele for this trait.
 		Can only add each allele once. 
 		Additionally sets trait pointer on the allele."""
-
-		from allele import Allele
 
 		if type(allele) != Allele:
 			raise TypeError, "Must add an Allele object."
