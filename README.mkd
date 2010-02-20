@@ -11,11 +11,17 @@ require students to pay to register for FlyLab (which currently costs $7).
 
 I think college students have to pay enough for tuition and books as is, so if I
 can help by creating something that saves a little bit of money for a lot of 
-students, I think that will do a lot of good.
+students, I think that will a measure of good.
 
 As for FlyLab itself, it amounts to little more than a simple Java applet for 
 learning basic non-Mendelian inheritance. I plan to implement it in Python, 
 improve it, then re-implement it in Javascript/HTML5. 
 
+License
+-------
 
+Copyright &copy; Brandon Thomas Suit 2010
+
+Open Drosophila Lab is/will be licensed under the AGPL 3. See COPYING for more
+details.
 
