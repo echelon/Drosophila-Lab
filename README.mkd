@@ -17,10 +17,24 @@ As for FlyLab itself, it amounts to little more than a simple Java applet for
 learning basic non-Mendelian inheritance. I plan to implement it in Python, 
 improve it, then re-implement it in Javascript/HTML5. 
 
+Features
+--------
+
+Open Drosophila Lab has same traits and alleles as FlyLab, enabling universities
+to reuse their carefully-crafted homework and lab manuals. It has all of the 
+same features, too:
+
+* Dominance / Recessiveness
+* Lethal alleles
+* Sex-linked traits
+* Recombination
+* Gene mapping
+* Chi-square analysis
+
 License
 -------
 
-Copyright &copy; Brandon Thomas Suit 2010
+Copyright &copy; 2010 Brandon Thomas Suit
 
 Open Drosophila Lab is/will be licensed under the AGPL 3. See COPYING for more
 details.
