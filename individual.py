@@ -37,8 +37,11 @@ class Individual(object):
 		If sex is specified, it will force the sex of the individual and REMOVE
 		any sex chromosomes, resetting them to WILDTYPE."""
 
+		if type(sex) == str:
+			sex = sex.lower()
+
 		if sex and (sex != 'm' and sex != 'f'):
-			raise Exception, "Invalid sex parameter"
+			raise Exception, "Invalid sex specified."
 
 		if chromos and type(chromos) != DiploSet:
 			raise Exception, "Invalid DiploSet provided for individual"
@@ -59,9 +62,18 @@ class Individual(object):
 			self.chromos = DiploSet()
 			self.__setSex(sex)
 
+
+	# =============== Gender-related methods ================= #
+
 	def __setSex(self, sex):
-		"""Set the sex of the individual.
-		Removes any genes set for chromosome 1, resetting to wild type!!"""
+		"""Used by the constructor to set the sex of the individual.
+		Removes any genes set for Chromosome I, resetting any traits present to 
+		wild type."""
+
+		if type(sex) != str:
+			raise Exception, "Sex parameter must be a string."
+
+		sex = sex.lower()
 
 		if sex != 'm' and sex != 'f':
 			raise Exception, "Invalid sex specified."
@@ -69,10 +81,11 @@ class Individual(object):
 		self.sex = sex
 
 		# Remove all genes from both pairs of Chromosome I
+		# This *must* be done to ensure no errors in sex-linkage crop up
 		self.chromos[0][0] = []
 		self.chromos[1][0] = []
 
-		# First chromosome 1 is always X, Second is either X or Y
+		# For consistency, First Chromo I is always X, Second is either X or Y
 		self.chromos[0][0].append('xch')
 		if sex == 'm':
 			self.chromos[1][0].append('ych')
@@ -80,7 +93,12 @@ class Individual(object):
 			self.chromos[1][0].append('xch')
 
 	def __calcSex(self):
-		"""Calculate sex based on X-balance system and cache the result."""
+		"""Calculate sex based on X-balance system and cache the result.
+		This is used for the drosophila the user does not manually create (the 
+		progeny).
+		"""
+
+		# Implementation of X-balance system of sex determinancy
 		cnt = 0
 		if 'xch' in self.chromos[0][0]:
 			cnt += 1
@@ -95,7 +113,7 @@ class Individual(object):
 	def isFemale(self):
 		"""Test if individual is female."""
 		if not self.sex:
-			self.__calcXBalance()
+			self.__calcSex()
 		return (self.sex == 'f')
 
 	def getSex(self):
@@ -104,11 +122,23 @@ class Individual(object):
 			self.__calcSex()
 		return self.sex
 
+
+	# =============== Representation, etc. methods =========== #
+
 	def __repr__(self):
 		ret = "<individual %s\n" % self.getSex()
 		ret += str(self.chromos)
 		return ret
 
+
+	# =============== Mating of individuals ================== #
+
+
+
+
+
+
+	# =============== TODO / FIXME / UPDATE ================== #
 
 	def mateMany(self, o, numOffspring = 1000):
 
@@ -229,3 +259,9 @@ class Individual(object):
 	#	ret = ret[:-2] + ">"
 	#	return ret
 	#
+
+class Indiv(Individual):
+	"""This is a shortcut name for use in the console only.""""
+	pass
+
+
