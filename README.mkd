@@ -1,0 +1,21 @@
+**This is a work in progress! I plan to throw this one away.**
+
+Open Drosophila Lab
+===================
+
+Open Drosophila Lab is intended to be a clone/replacement of 
+[FlyLab](http://biologylab.awlonline.com/protected/FlyLab/flylab.php), the 
+for-pay learning resource created by California State University and publisher 
+Benjamin Cummings. As a part of their curriculum, many colleges and universities 
+require students to pay to register for FlyLab (which currently costs $7). 
+
+I think college students have to pay enough for tuition and books as is, so if I
+can help by creating something that saves a little bit of money for a lot of 
+students, I think that will do a lot of good.
+
+As for FlyLab itself, it amounts to little more than a simple Java applet for 
+learning basic non-Mendelian inheritance. I plan to implement it in Python, 
+improve it, then re-implement it in Javascript/HTML5. 
+
+
+
