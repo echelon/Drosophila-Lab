@@ -25,8 +25,7 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 import random
-from allele import Allele
-from trait import Trait
+from gene import Trait, Allele
 from defs import defs
 
 from chromoset import HaploSet, DiploSet

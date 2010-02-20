@@ -5,7 +5,9 @@
 from chromoset import HaploSet, DiploSet
 from individual import Individual, Indiv
 from gamete import Gamete
+from gene import Trait, Allele
 #from sex import Male, Female
 
 def clear():
 	print "\n"*40
+

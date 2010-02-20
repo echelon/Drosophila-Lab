@@ -1,13 +1,15 @@
 # Open Drosophila Lab
 # Copyright (C) 2010  Brandon Thomas Suit
 #	http://possibilistic.org
-#	mailto:[echelon,brandon.suit]@gmail.com
+#	mailto:[echelon|brandon.suit]@gmail.com
 #
 # (potentially) For Southern Polytechnic State University
 #	http://www.spsu.edu
 #
-# Open Drosophila Lab is an open source reimplementation of Virtual FlyLab,
-# a for-pay resource by the California State University and Benjamin Cummings.
+# Open Drosophila Lab promotes the learning of basic non-Mendelian inheritance
+# and gene mapping by engaging students in designing genetic crosses. It is an 
+# open source reimplementation of Virtual FlyLab, a for-pay resource created by 
+# California State University and publisher Benjamin Cummings. 
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU Affero General Public License as
@@ -22,139 +24,70 @@
 #	You should have received a copy of the GNU Affero General Public License
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from trait import Trait
-from allele import Allele
+from gene import Trait, Allele
 
-class defs(object):
-	"""Simply an accessor to the traits and alleles.
-	Do not instantiate. 
+# ========================= #
+#          TRAITS           #
+# ========================= #
 
-		traits, alleles = defs.traits, defs.alleles
+br = Trait('Bristle', 'br')
+bc = Trait('Body Color', 'bc')
+an = Trait('Antennae', 'an')
+ec = Trait('Eye Color', 'ec')
+es = Trait('Eye Shape', 'es')
+sz = Trait('Wing Size', 'sz')
+sh = Trait('Wing Shape', 'sh')
+vn = Trait('Wing Vein', 'vn')
+ag = Trait('Wing Angle', 'ag')
 
-		trait = defs.getAllele("D") # Returns "Dichaete"
+# ========================= #
+#          ALLELES          #
+# ========================= #
 
-		trait = defs.getWildtype("BR") # Returns the Bristle wildtype
-	"""
+# Bristle
+Allele('Forked', 'F',	br, 2, 10)
+Allele('Shaven', 'SV',	br, 2, 20)
+Allele('Singed', 'SN',	br, 2, 30)
+Allele('Spineless', 'SS', br, 2, 40)
+Allele('Stubble', 'SB',	br, 2, 50)
 
-	# Dictionary lookup by abbreviation for all traits and alleles
-	traits = {}
-	alleles = {}
-	wildtypeAlleles = {}
+# Body Color
+Allele('Black', 'BL',	bc, 3, 10)
+Allele('Ebony', 'E',	bc, 3, 20)
+Allele('Sable', 'S',	bc, 3, 30)
+Allele('Tan', 'T',		bc, 3, 40)
+Allele('Yellow', 'Y',	bc, 3, 40)
 
-	def __init__(self):
-		raise Exception, "Cannot instantiate defs class."
+# Antennae
+Allele('Aristapedia', 'AR', an, 4, 40)
 
-	@classmethod
-	def addTrait(cls, trait):
-		cls.traits[trait.abbr] = trait
+# Eye Color
+Allele('Brown', 'BW',	ec, 2, 60)
+Allele('Purple', 'PR',	ec, 2, 70)
+Allele('Sepia', 'SE',	ec, 2, 80)
+Allele('White', 'W',	ec, 2, 90)
 
-	@classmethod
-	def addAllele(cls, allele):
-		print "Adding allele"
-		cls.alleles[allele.abbr] = alleles
+# Eye Shape
+Allele('Bar', 'B',		es, 3, 60)
+Allele('Eyeless', 'EY',	es, 3, 70)
+Allele('Lobe', 'L',		es, 3, 80)
+Allele('Star', 'ST',	es, 3, 90)
 
-	@classmethod
-	def addWildtype(cls, wildtype):
-		cls.wildtypeAlleles[wildtype.abbr] = wildtype
+# Wing Size
+Allele('Apterous', 'AP', sz, 4, 60)
+Allele('Miniature', 'M', sz, 4, 70)
+Allele('Vestigial', 'VG', sz, 4, 80)
 
-	@classmethod
-	def getAllele(cls, abbr):
-		"""Look up the allele by its abbreviation. NOTE: Cannot look up +!"""
-		if abbr == '+':
-			return False
+# Wing Shape
+Allele('Curly', 'CY', sh, 2, 100)
+Allele('Curved', 'C', sh, 2, 110)
+Allele('Dumpy', 'DP', sh, 2, 120)
+Allele('Scalloped', 'SD', sh, 2, 130)
 
-		abbr = abbr.upper()
-		for al in cls.alleles.values():  # TODO: Dict, not loop
-			if al.abbr == abbr:
-				return al
+# Wing Vein
+Allele('Crossveinless', 'CV', vn, 3, 100)
+Allele('Radius Incomplete', 'RI', vn, 3, 110)
 
-		return False
-
-	@classmethod
-	def getWildtype(cls, abbr):
-		"""Look up the wildtype for a trait by the trait's abbreviation."""
-		abbr = abbr.lower()
-
-		trait = None
-		for tr in cls.traits.values():	# TODO: Dict, not loop
-			if tr.abbr == abbr:
-				trait = tr
-
-		if not trait:
-			return False
-
-		return trait.getWildtype()
-
-
-# TODO: Just creating these should register them with the dictionary. 
-# XXX: Note - the dictionary keys here are NOT NOT NOT abbreviations used 
-t = {
-	'bristle' :		Trait('Bristle', 'br'),
-	'body_color':	Trait('Body Color', 'bc'),
-	'antennae':		Trait('Antennae', 'an'),
-	'eye_color':	Trait('Eye Color', 'ec'),
-	'eye_shape':	Trait('Eye Shape', 'es'),
-	'wing_size':	Trait('Wing Size', 'wsz'),
-	'wing_shape':	Trait('Wing Shape', 'wsh'),
-	'wing_vein':	Trait('Wing Vein', 'wv'),
-	'wing_angle':	Trait('Wing Angle', 'wa'),
-}
-
-
-# TODO: For all non-wildtype, a dictionary should be created for lookup. 
-a = {
-	# Bristle
-	'bristle+':		Allele('Wild Type', '+', t['bristle']),
-	'forked':		Allele('Forked', 'F', t['bristle']),
-	'Shaven':		Allele('Shaven', 'SV', t['bristle']),
-	'Singed':		Allele('Singed', 'SN', t['bristle']),
-	'Spineless':	Allele('Spineless', 'SS', t['bristle']),
-	'Stubble':		Allele('Stubble', 'SB', t['bristle']),
-	# Body Color
-	'body_color+':	Allele('Wild Type', '+', t['body_color']),
-	'black':		Allele('Black', 'BL', t['body_color']),
-	'ebony':		Allele('Ebony', 'E', t['body_color']),
-	'sable':		Allele('Sable', 'S', t['body_color']),
-	'tan':			Allele('Tan', 'T', t['body_color']),
-	'yellow':		Allele('Yellow', 'Y', t['body_color']),
-	# Antennae
-	'antennae+':	Allele('Wild Type', '+', t['antennae']),
-	'aristapedia':	Allele('Aristapedia', 'AR', t['antennae']),
-	# Eye Color
-	'eye_color+':	Allele('Wild Type', '+', t['eye_color']),
-	'brown':		Allele('Brown', 'BW', t['eye_color']),
-	'purple':		Allele('Purple', 'PR', t['eye_color']),
-	'sepia':		Allele('Sepia', 'SE', t['eye_color']),
-	'white':		Allele('White', 'W', t['eye_color']),
-	# Eye Shape
-	'eye_shape+':	Allele('Wild Type', '+', t['eye_shape']),
-	'bar':			Allele('Bar', 'B', t['eye_shape']),
-	'eyeless':		Allele('Eyeless', 'EY', t['eye_shape']),
-	'lobe':			Allele('Lobe', 'L', t['eye_shape']),
-	'star':			Allele('Star', 'ST', t['eye_shape']),
-	# Wing Size
-	'wing_size+':	Allele('Wild Type', '+', t['wing_size']),
-	'apterous':		Allele('Apterous', 'AP', t['wing_size']),
-	'miniature':	Allele('Miniature', 'M', t['wing_size']),
-	'vestigial':	Allele('Vestigial', 'VG', t['wing_size']),
-	# Wing Shape
-	'wing_shape+':	Allele('Wild Type', '+', t['wing_shape']),
-	'curly':		Allele('Curly', 'CY', t['wing_shape']),
-	'curved':		Allele('Curved', 'C', t['wing_shape']),
-	'dumpy':		Allele('Dumpy', 'DP', t['wing_shape']),
-	'scalloped':	Allele('Scalloped', 'SD', t['wing_shape']),
-	# Wing Vein 
-	'wing_vein+':	Allele('Wild Type', '+', t['wing_vein']),
-	'crossveinless': Allele('Crossveinless', 'CV', t['wing_vein']),
-	'incomplete':	Allele('Radius Incomplete', 'RI', t['wing_vein']),
-	# Wing Angle
-	'wing_angle+':	Allele('Wild Type', '+', t['wing_angle']),
-	'dichaete':		Allele('Dichaete', 'D', t['wing_angle']),
-}
-
-
-
-
-def testGetPhenotype():
-	pass
+# Wing Angle
+Allele('Dichaete', 'D', ag, 4, 140)
 
