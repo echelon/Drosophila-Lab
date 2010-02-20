@@ -1,13 +1,15 @@
 # Open Drosophila Lab
 # Copyright (C) 2010  Brandon Thomas Suit
 #	http://possibilistic.org
-#	mailto:[echelon,brandon.suit]@gmail.com
+#	mailto:[echelon|brandon.suit]@gmail.com
 #
 # (potentially) For Southern Polytechnic State University
 #	http://www.spsu.edu
 #
-# Open Drosophila Lab is an open source reimplementation of Virtual FlyLab,
-# a for-pay resource by the California State University and Benjamin Cummings.
+# Open Drosophila Lab promotes the learning of basic non-Mendelian inheritance
+# and gene mapping by engaging students in designing genetic crosses. It is an 
+# open source reimplementation of Virtual FlyLab, a for-pay resource created by 
+# California State University and publisher Benjamin Cummings. 
 #
 #	This program is free software: you can redistribute it and/or modify
 #	it under the terms of the GNU Affero General Public License as
@@ -33,9 +35,15 @@ from gamete import Gamete
 class Individual(object):
 
 	def __init__(self, chromos = None, sex = None):
-		"""Constructor. 
-		If sex is specified, it will force the sex of the individual and REMOVE
-		any sex chromosomes, resetting them to WILDTYPE."""
+		"""Individual CTOR. 
+
+		* If a diploset of chromosomes is specified, the individual will use
+		  these as its genes. 
+		* If sex is specified, it will force the sex of the individual and 
+		  REMOVE any sex chromosomes, resetting them to WILDTYPE.
+
+		For now, these parameters are mutually exclusive.
+		"""
 
 		if type(sex) == str:
 			sex = sex.lower()
@@ -63,7 +71,9 @@ class Individual(object):
 			self.__setSex(sex)
 
 
-	# =============== Gender-related methods ================= #
+	# ======================================================== #
+	#                Gender-related methods                    #
+	# ======================================================== #
 
 	def __setSex(self, sex):
 		"""Used by the constructor to set the sex of the individual.
@@ -123,7 +133,9 @@ class Individual(object):
 		return self.sex
 
 
-	# =============== Representation, etc. methods =========== #
+	# ======================================================== #
+	#              Representation, etc. methods                #
+	# ======================================================== #
 
 	def __repr__(self):
 		ret = "<individual %s\n" % self.getSex()
@@ -131,7 +143,9 @@ class Individual(object):
 		return ret
 
 
-	# =============== Mating of individuals ================== #
+	# ======================================================== #
+	#                  Mating of individuals                   #
+	# ======================================================== #
 
 
 
