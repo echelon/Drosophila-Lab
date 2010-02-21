@@ -26,10 +26,11 @@ same features, too:
 
 * Dominance / Recessiveness
 * Lethal alleles
-* Sex-linked traits
+* Sex-linked traits (Virtual FlyLab only has X-linked traits)
 * Recombination
 * Gene mapping
 * Chi-square analysis
+* Epistasis
 
 License
 -------
