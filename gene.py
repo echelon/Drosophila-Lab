@@ -140,3 +140,22 @@ class Trait(object):
 		return "Trait <%s>" % self.name
 
 
+# =============================================================
+#					ATTRIBUTES OF GENES
+# =============================================================
+
+# Just an easy way to state in defs, rather than as strings. 
+# I wish python had ENUMs... 
+class Recessive(object):
+	pass
+
+class Dominant(object):
+	pass
+
+class Lethal(object):
+	pass
+
+class NonLethal(object)
+	pass
+
+

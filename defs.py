@@ -25,6 +25,7 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gene import Trait, Allele
+from gene import Dominant, Recessive, Lethal, NonLethal
 
 # ========================= #
 #          TRAITS           #
@@ -44,50 +45,56 @@ ag = Trait('Wing Angle', 'AG')
 #          ALLELES          #
 # ========================= #
 
+X, Y = ['x', 'y']
+
+# References for gene mapping
+# [1] http://www.ceebt.embo.org/projects/project13/material/project13.pdf
+
 # Bristle
-Allele('Forked', 'F',	br, 2, 10)
-Allele('Shaven', 'SV',	br, 2, 20)
-Allele('Singed', 'SN',	br, 2, 30)
-Allele('Spineless', 'SS', br, 2, 40)
-Allele('Stubble', 'SB',	br, 2, 50)
+Allele('Forked', 'F',	  br, X, 56.3) # [1]
+Allele('Shaven', 'SV',	  br, 4, 3.0)
+Allele('Singed', 'SN',	  br, X, 21.0)
+Allele('Spineless', 'SS', br, 0, 40)
+Allele('Stubble', 'SB',	  br, 0, 0)
 
 # Body Color
-Allele('Black', 'BL',	bc, 3, 10)
-Allele('Ebony', 'E',	bc, 3, 20)
-Allele('Sable', 'S',	bc, 3, 30)
-Allele('Tan', 'T',		bc, 3, 40)
-Allele('Yellow', 'Y',	bc, 3, 40)
+Allele('Black', 'BL',	bc, 0, 0)
+Allele('Ebony', 'E',	bc, 3, 70.7)
+Allele('Sable', 'S',	bc, X, 43.0) # [1]
+Allele('Tan', 'T',		bc, X, 27.7) # [1]
+Allele('Yellow', 'Y',	bc, X, 0.0)
 
 # Antennae
-Allele('Aristapedia', 'AR', an, 4, 40)
+Allele('Aristapedia', 'AR', an, 0, 0)
 
 # Eye Color
-Allele('Brown', 'BW',	ec, 2, 60)
-Allele('Purple', 'PR',	ec, 2, 70)
-Allele('Sepia', 'SE',	ec, 2, 80)
-Allele('White', 'W',	ec, 2, 90)
+Allele('Brown', 'BW',	ec, 0, 0)
+Allele('Purple', 'PR',	ec, 2, 54.5)
+Allele('Sepia', 'SE',	ec, 0, 0)
+Allele('White', 'W',	ec, X, 1.5)
 
 # Eye Shape
-Allele('Bar', 'B',		es, 3, 60)
-Allele('Eyeless', 'EY',	es, 3, 70)
-Allele('Lobe', 'L',		es, 3, 80)
-Allele('Star', 'ST',	es, 3, 90)
+Allele('Bar', 'B',		es, 0, 0)
+Allele('Eyeless', 'EY',	es, 0, 0)
+Allele('Lobe', 'L',		es, 0, 0)
+Allele('Star', 'ST',	es, 0, 0)
 
 # Wing Size
-Allele('Apterous', 'AP', sz, 4, 60)
-Allele('Miniature', 'M', sz, 4, 70)
-Allele('Vestigial', 'VG', sz, 4, 80)
+Allele('Apterous', 'AP',  sz, 0, 0)
+Allele('Miniature', 'M',  sz, X, 36.1)
+Allele('Vestigial', 'VG', sz, 0, 0)
 
 # Wing Shape
-Allele('Curly', 'CY', sh, 2, 100)
-Allele('Curved', 'C', sh, 2, 110)
-Allele('Dumpy', 'DP', sh, 2, 120)
-Allele('Scalloped', 'SD', sh, 2, 130)
+Allele('Curly', 'CY', sh, 0, 0)
+Allele('Curved', 'C', sh, 0, 0)
+Allele('Dumpy', 'DP', sh, 0, 0)
+Allele('Scalloped', 'SD', sh, X, 51.5)
 
 # Wing Vein
-Allele('Crossveinless', 'CV', vn, 3, 100)
-Allele('Radius Incomplete', 'RI', vn, 3, 110)
+Allele('Crossveinless', 'CV',	  vn, X, 13.7) # [1]
+Allele('Radius Incomplete', 'RI', vn, 0, 0)
 
 # Wing Angle
-Allele('Dichaete', 'D', ag, 4, 140)
+Allele('Dichaete', 'D', ag, 3, 41.0)
+
 
