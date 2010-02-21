@@ -51,48 +51,48 @@ X, Y = ['x', 'y']
 # [1] http://www.ceebt.embo.org/projects/project13/material/project13.pdf
 
 # Bristle
-Allele('Forked', 'F',	  br, X, 56.3) # [1]
+Allele('Forked', 'F',	  br, X, 56.3)
 Allele('Shaven', 'SV',	  br, 4, 3.0)
 Allele('Singed', 'SN',	  br, X, 21.0)
-Allele('Spineless', 'SS', br, 0, 40)
-Allele('Stubble', 'SB',	  br, 0, 0)
+Allele('Spineless', 'SS', br, 3, 58.5)
+Allele('Stubble', 'SB',	  br, 3, 58.2)
 
 # Body Color
-Allele('Black', 'BL',	bc, 0, 0)
+Allele('Black', 'BL',	bc, 2, 48.5)
 Allele('Ebony', 'E',	bc, 3, 70.7)
-Allele('Sable', 'S',	bc, X, 43.0) # [1]
-Allele('Tan', 'T',		bc, X, 27.7) # [1]
+Allele('Sable', 'S',	bc, X, 43.0)
+Allele('Tan', 'T',		bc, X, 27.7)
 Allele('Yellow', 'Y',	bc, X, 0.0)
 
 # Antennae
-Allele('Aristapedia', 'AR', an, 0, 0)
+Allele('Aristapedia', 'AR', an, 3, 47.7)
 
 # Eye Color
-Allele('Brown', 'BW',	ec, 0, 0)
+Allele('Brown', 'BW',	ec, 2, 104.5)
 Allele('Purple', 'PR',	ec, 2, 54.5)
-Allele('Sepia', 'SE',	ec, 0, 0)
+Allele('Sepia', 'SE',	ec, 3, 26.0)
 Allele('White', 'W',	ec, X, 1.5)
 
 # Eye Shape
-Allele('Bar', 'B',		es, 0, 0)
-Allele('Eyeless', 'EY',	es, 0, 0)
-Allele('Lobe', 'L',		es, 0, 0)
-Allele('Star', 'ST',	es, 0, 0)
+Allele('Bar', 'B',		es, X, 57.0)
+Allele('Eyeless', 'EY',	es, 4, 2.0)
+Allele('Lobe', 'L',		es, 2, 72.0)
+Allele('Star', 'ST',	es, 2, 1.3)
 
 # Wing Size
-Allele('Apterous', 'AP',  sz, 0, 0)
+Allele('Apterous', 'AP',  sz, 2, 55.4)
 Allele('Miniature', 'M',  sz, X, 36.1)
-Allele('Vestigial', 'VG', sz, 0, 0)
+Allele('Vestigial', 'VG', sz, 2, 67.0)
 
 # Wing Shape
-Allele('Curly', 'CY', sh, 0, 0)
-Allele('Curved', 'C', sh, 0, 0)
-Allele('Dumpy', 'DP', sh, 0, 0)
+Allele('Curly', 'CY',	  sh, 2, 6.1)
+Allele('Curved', 'C',	  sh, 2, 75.5)
+Allele('Dumpy', 'DP',	  sh, 2, 13.0)
 Allele('Scalloped', 'SD', sh, X, 51.5)
 
 # Wing Vein
-Allele('Crossveinless', 'CV',	  vn, X, 13.7) # [1]
-Allele('Radius Incomplete', 'RI', vn, 0, 0)
+Allele('Crossveinless', 'CV',	  vn, X, 13.7)
+Allele('Radius Incomplete', 'RI', vn, 3, 48.4)
 
 # Wing Angle
 Allele('Dichaete', 'D', ag, 3, 41.0)
