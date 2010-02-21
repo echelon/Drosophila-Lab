@@ -25,7 +25,6 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from gene import Trait, Allele
-from gene import Dominant, Recessive, Lethal, NonLethal
 
 # ========================= #
 #          TRAITS           #
@@ -45,7 +44,9 @@ ag = Trait('Wing Angle', 'AG')
 #          ALLELES          #
 # ========================= #
 
-X, Y = ['x', 'y']
+X, Y = ['X', 'Y']
+Lethal, NonLethal = ['lethal', 'nonlethal']
+Dominant, Recessive = ['dominant', 'recessive']
 
 # References for gene mapping
 # [1] http://www.ceebt.embo.org/projects/project13/material/project13.pdf
@@ -55,7 +56,7 @@ Allele('Forked', 'F',	  br, X, 56.3)
 Allele('Shaven', 'SV',	  br, 4, 3.0)
 Allele('Singed', 'SN',	  br, X, 21.0)
 Allele('Spineless', 'SS', br, 3, 58.5)
-Allele('Stubble', 'SB',	  br, 3, 58.2)
+Allele('Stubble', 'SB',	  br, 3, 58.2, Dominant)
 
 # Body Color
 Allele('Black', 'BL',	bc, 2, 48.5)
@@ -65,7 +66,7 @@ Allele('Tan', 'T',		bc, X, 27.7)
 Allele('Yellow', 'Y',	bc, X, 0.0)
 
 # Antennae
-Allele('Aristapedia', 'AR', an, 3, 47.7)
+Allele('Aristapedia', 'AR', an, 3, 47.7, Dominant)
 
 # Eye Color
 Allele('Brown', 'BW',	ec, 2, 104.5)
@@ -74,10 +75,10 @@ Allele('Sepia', 'SE',	ec, 3, 26.0)
 Allele('White', 'W',	ec, X, 1.5)
 
 # Eye Shape
-Allele('Bar', 'B',		es, X, 57.0)
+Allele('Bar', 'B',		es, X, 57.0, Dominant)
 Allele('Eyeless', 'EY',	es, 4, 2.0)
-Allele('Lobe', 'L',		es, 2, 72.0)
-Allele('Star', 'ST',	es, 2, 1.3)
+Allele('Lobe', 'L',		es, 2, 72.0, Dominant)
+Allele('Star', 'ST',	es, 2, 1.3, Dominant)
 
 # Wing Size
 Allele('Apterous', 'AP',  sz, 2, 55.4)
@@ -85,7 +86,7 @@ Allele('Miniature', 'M',  sz, X, 36.1)
 Allele('Vestigial', 'VG', sz, 2, 67.0)
 
 # Wing Shape
-Allele('Curly', 'CY',	  sh, 2, 6.1)
+Allele('Curly', 'CY',	  sh, 2, 6.1, Dominant)
 Allele('Curved', 'C',	  sh, 2, 75.5)
 Allele('Dumpy', 'DP',	  sh, 2, 13.0)
 Allele('Scalloped', 'SD', sh, X, 51.5)
@@ -95,6 +96,6 @@ Allele('Crossveinless', 'CV',	  vn, X, 13.7)
 Allele('Radius Incomplete', 'RI', vn, 3, 48.4)
 
 # Wing Angle
-Allele('Dichaete', 'D', ag, 3, 41.0)
+Allele('Dichaete', 'D', ag, 3, 41.0, Dominant)
 
 

@@ -35,11 +35,11 @@ class Allele(object):
 
 	@classmethod
 	def get(cls, abbr):
-		return cls.alleles[abbr]
+		return cls.alleles[abbr.upper()]
 
 	@classmethod
 	def exists(cls, abbr):
-		return abbr in cls.alleles
+		return abbr.upper() in cls.alleles
 
 	@classmethod
 	def list(cls):
@@ -54,27 +54,46 @@ class Allele(object):
 		if type(trait) != Trait:
 			raise TypeError, "Trait must be a Trait object." # TODO: String abbr ok
 
-		if onChromo not in [2, 3, 4, 'x', 'X', 'y', 'Y']:
+		if onChromo not in [2, 3, 4, 'x', 'X']:
 			raise AssertionError, "Chromosome location improperly specified."
 
-		if mapPos < 0.0 or mapPos > 200.0:
+		if type(mapPos) != float or mapPos < 0.0 or mapPos > 200.0:
 			raise AssertionError, "Map position out of bounds"
 
 		self.name = name
 		self.abbr = abbr
 		self.trait = trait
-		self.onChromo = onChromo # TODO: Special case: 'X' or 'Y'
+		self.onChromo = onChromo # TODO: Special case: 'X' 
 		self.mapPos = mapPos
+		self.isDominant = False
+		self.isLethal = False
+
+		for e in effects:
+			e = e.lower()
+			if e == 'dominant':
+				self.isDominant = True
+			elif e == 'lethal':
+				self.isLethal = True
 
 		Allele.alleles[abbr] = self
 		trait.addAllele(self)
 
+
 	def __repr__(self):
 		"""String representation of Allele."""
-		if self.trait:
-			return "%s <%s/%s>" % (self.name, self.trait.name, self.abbr)
-		return "%s <NoTrait/%s>" % (self.name, self.abbr)
+		return "%s <%s/%s>" % (self.name, self.trait.name, self.abbr)
 
+	def __str__(self):
+		ret = "\n%s (%s) allele\n" % (self.name, self.abbr)
+
+		names = ['Trait', 'Chromosome', 'Map Units', 'Dominant', 'Lethal']
+		vals = [self.trait.name, self.onChromo, self.mapPos, self.isDominant,
+				self.isLethal]
+
+		for i in range(len(names)): 
+			ret += "    %s: %s\n" % (names[i], vals[i])
+
+		return ret
 
 # =============================================================
 #						TRAIT CLASS
@@ -138,24 +157,4 @@ class Trait(object):
 	def __repr__(self):
 		"""String representation of a Trait."""
 		return "Trait <%s>" % self.name
-
-
-# =============================================================
-#					ATTRIBUTES OF GENES
-# =============================================================
-
-# Just an easy way to state in defs, rather than as strings. 
-# I wish python had ENUMs... 
-class Recessive(object):
-	pass
-
-class Dominant(object):
-	pass
-
-class Lethal(object):
-	pass
-
-class NonLethal(object)
-	pass
-
 
