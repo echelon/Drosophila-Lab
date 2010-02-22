@@ -3,26 +3,28 @@
 Open Drosophila Lab
 ===================
 
-Open Drosophila Lab is intended to be a clone/replacement of 
-[FlyLab](http://biologylab.awlonline.com/protected/FlyLab/flylab.php), the 
-for-pay learning resource created by California State University and publisher 
-Benjamin Cummings. As a part of their curriculum, many colleges and universities 
-require students to pay to register for FlyLab (which currently costs $7). 
+Open Drosophila Lab is intended to be a modern clone/replacement of 
+[Virtual FlyLab](http://biologylab.awlonline.com/protected/FlyLab/flylab.php), 
+a for-pay genetics learning tool created by California State University and 
+publisher Benjamin Cummings. Students in many colleges and universities are 
+required to pay for FlyLab, as it is a mandatory part of their genetics 
+curriculum.
 
-I think college students have to pay enough for tuition and books as is, so if I
-can help by creating something that saves a little bit of money for a lot of 
-students, I think that will do a measure of good.
+I believe college students have to pay enough for tuition and books as is, so if
+I can help by creating something that saves a little bit of money for a lot of 
+students, I feel that will do a measure of good.
 
-As for FlyLab itself, it amounts to little more than a simple Java applet for 
-learning basic non-Mendelian inheritance. I plan to implement it in Python, 
-improve it, then re-implement it in Javascript/HTML5. 
+As for FlyLab itself, it amounts to little more than a simple (and oudated) Java 
+applet for learning basic non-Mendelian inheritance. I plan to implement Open 
+Drosophila Lab in Python, improve upon it, and then re-implement it all again 
+in Javascript/HTML5. 
 
 Features
 --------
 
 Open Drosophila Lab has same traits and alleles as FlyLab, enabling universities
-to reuse their carefully-crafted homework and lab manuals. It has all of the 
-same features, too:
+to reuse any homework and lab manual materials that they created that centers on 
+the use of Virtual FlyLab. I'm implementing all of the  same features:
 
 * Dominance / Recessiveness
 * Lethal alleles
@@ -31,6 +33,15 @@ same features, too:
 * Gene mapping
 * Chi-square analysis
 * Epistasis
+
+Based upon future feedback, I would like to add the following:
+
+* Y-linked traits
+* Incomplete dominance
+* Co-dominance
+* Penetrance
+* Variable expressivity
+* etc.
 
 License
 -------
