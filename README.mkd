@@ -34,7 +34,8 @@ the use of Virtual FlyLab. I'm implementing all of the  same features:
 * Chi-square analysis
 * Epistasis
 
-Based upon future feedback, I would like to add the following:
+Based upon future feedback, I would like to add the following features not found
+in Virtual FlyLab:
 
 * Y-linked traits
 * Incomplete dominance
