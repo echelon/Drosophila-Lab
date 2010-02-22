@@ -96,8 +96,8 @@ class Allele(object):
 		vals = [self.trait.name, self.onChromo, self.mapPos, self.dominant,
 				self.lethal]
 
-		for i in range(len(names)): 
-			ret += "    %s: %s\n" % (names[i], vals[i])
+		for i, name in enumerate(names): 
+			ret += "    %s: %s\n" % (name, vals[i])
 
 		return ret
 

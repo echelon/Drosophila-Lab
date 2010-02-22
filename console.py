@@ -12,24 +12,38 @@ def clear():
 	print "\n"*40
 
 
-a, b = range(2)
+a, b, c = range(3)
+
+
+def countSex(indivs):
+	"""Count the sex in a list of individuals."""
+	male = 0
+	female = 0
+
+	for indiv in indivs:
+		if indiv.isFemale():
+			female += 1
+		else:
+			male += 1
+
+	print "Male: %d, Female: %d, Total: %d" % (male, female, len(indivs))
+
 def create():
 	a = Indiv()
+	b = Indiv(sex='m')
+	c = Indiv()
 
-	setA = [
+	setC = [
 		'bl', 'y', 's', 't', # Body colors
 
 		'b', 'pr', 'ss', 'sv'
 	]
-	for x in setA:
-		a.setAs(x)
+	for x in setC:
+		c.setAs(x)
 
 	globals()['a'] = a
-	globals()['z'] = a
-
-	globals()['b'] = Indiv(sex='m')
-
-	return a
+	globals()['b'] = b
+	globals()['c'] = c
 
 create()
 

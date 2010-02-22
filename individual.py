@@ -202,9 +202,58 @@ class Individual(object):
 	# ======================================================== #
 	#                  Mating of individuals                   #
 	# ======================================================== #
+	
+	def mate(self, other, num = 3, vary = False): 
+		"""Mate the individual with another from the opposite sex."""
+
+		if self.sex == other.sex:
+			raise Exception, "Cannot mate two members of the same sex."
+
+		# Vary the number of offspring slightly 
+		if vary:
+			diff = int(random.gauss(0, 12))
+			num += diff
+
+		progeny = []
+		for i in range(num):
+			progeny.append(self.__doMate(other))
+
+		return progeny
 
 
+	def __doMate(self, o):
+		"""Create a single offspring."""
 
+		newGenome = DiploSet()
+
+		# Two haploid gametes --> diploid
+		# DOES NOT SUPPORT CHROMOSOME DUPLICATION / COPY ERRORS.
+		newGenome[0] = self.getGamete()
+		newGenome[1] = o.getGamete()
+
+		return Individual(newGenome)
+
+
+	def getGamete(self):
+		"""Create a gamete from the individual."""
+
+		# XXX TODO: Produce 4, but only return 1.  Do actual meiosis.
+
+		hap = HaploSet()
+
+		# XXX TODO FIXME: Female crossover!!
+		if self.isFemale():
+			for i in range(4):
+				hap[i] = self.chromos[random.randint(0, 1)][i]
+
+		# Males do not cross over.
+		# Note the 50/50 chance for a male returning the 'X' or 'Y' chromosome.		
+		if not self.isFemale():
+			for i in range(4):
+				hap[i] = self.chromos[random.randint(0, 1)][i]
+
+
+		return hap
 
 
 
@@ -233,43 +282,6 @@ class Individual(object):
 			progeny.append(self.mate(other))
 
 		return progeny
-
-	def getGamete(self):
-
-		# XXX: Males do not cross over.
-		# XXX: Produce 4, but only return 1. 
-
-		nsex = 'f'
-		hap = HaploSet()
-
-		# XXX: Males do not cross over.
-		# Also, there's a 50/50 chance for male returning 'X' or 'Y' chromosome.		
-		if self.isMale():
-
-			for i in range(4):
-				rand = random.randint(0, 1)
-				if i == 0 and rand == 1:
-					gamSex = 'm'
-				hap[i] = self.chromos[rand] 
-
-			if random.randint(0, 1):
-				nsex = 'm'
-
-		gam = Gamete(hap, nsex)
-
-		return gamete
-
-	def mate(self, o):
-		"""Mate the individual with another from the opposite sex."""
-		if self.sex == o.sex:
-			raise Exception, "Cannot mate two members of the same sex."
-
-		g1 = self.getGamete()
-		g2 = o.getGamete()
-
-		return g1.fuze(g2)
-
-
 
 
 	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
