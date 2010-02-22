@@ -138,16 +138,41 @@ class Individual(object):
 
 	def setAs(self, alleleAbbr):
 		"""Set HOMOZYGOUS for the allele, unless lethal or sex-linked.
-		Supply the allele abbreviation for lookup."""
+		Supply the allele abbreviation for lookup.
+		Returns False if the allele couldn't be set (x-linked lethal for males.)
+		"""
 
 		allele = Allele.get(alleleAbbr.upper())
 		chromo = allele.onChromo
+		lethal = allele.isLethal()		
 
-		# TODO: Don't set homozygous if lethal or hemizygous
+		if chromo not in [2, 3, 4, 'x', 'X']:
+			raise Exception, \
+				"Allele supplied is not on a valid chromosome."
+
+		# Autosomal genes
 		if chromo in [2, 3, 4]:
 			self.chromos[0][chromo-1].append(allele.abbr)
-			self.chromos[1][chromo-1].append(allele.abbr)
+			if not lethal:
+				self.chromos[1][chromo-1].append(allele.abbr)
 
+			return True
+
+		# X-linked genes
+		if not self.sex:
+			self.__cacheSex()
+
+		# Can't manually create X-linked lethal males!
+		if self.sex == 'm' and lethal:
+			return False
+
+		self.chromos[0][0].append(allele.abbr)
+
+		if self.sex == 'f' and not lethal:
+			self.chromos[1][0].append(allele.abbr)
+
+		return True
+				
 
 	def setWildFor(self, traitAbbr):
 		"""Basically unsets any allele of a trait, returning to NULL/wildtype

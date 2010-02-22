@@ -65,18 +65,24 @@ class Allele(object):
 		self.trait = trait
 		self.onChromo = onChromo # TODO: Special case: 'X' 
 		self.mapPos = mapPos
-		self.isDominant = False
-		self.isLethal = False
+		self.dominant = False
+		self.lethal = False
 
 		for e in effects:
 			e = e.lower()
 			if e == 'dominant':
-				self.isDominant = True
+				self.dominant = True
 			elif e == 'lethal':
-				self.isLethal = True
+				self.lethal = True
 
 		Allele.alleles[abbr] = self
 		trait.addAllele(self)
+
+	def isDominant(self):
+		return self.dominant
+
+	def isLethal(self):
+		return self.lethal
 
 
 	def __repr__(self):
@@ -87,8 +93,8 @@ class Allele(object):
 		ret = "\n%s (%s) allele\n" % (self.name, self.abbr)
 
 		names = ['Trait', 'Chromosome', 'Map Units', 'Dominant', 'Lethal']
-		vals = [self.trait.name, self.onChromo, self.mapPos, self.isDominant,
-				self.isLethal]
+		vals = [self.trait.name, self.onChromo, self.mapPos, self.dominant,
+				self.lethal]
 
 		for i in range(len(names)): 
 			ret += "    %s: %s\n" % (names[i], vals[i])
