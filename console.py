@@ -5,7 +5,6 @@
 from chromoset import HaploSet, DiploSet
 from individual import Individual
 from individual import Indiv, Male, Female # Shortcuts
-from gamete import Gamete
 from gene import Trait, Allele
 #from sex import Male, Female
 

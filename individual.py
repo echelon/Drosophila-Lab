@@ -29,7 +29,6 @@ from gene import Trait, Allele
 import defs
 
 from chromoset import HaploSet, DiploSet
-from gamete import Gamete
 
 class Individual(object):
 
