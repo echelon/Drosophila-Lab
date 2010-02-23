@@ -26,7 +26,7 @@ Open Drosophila Lab has same traits and alleles as FlyLab, enabling universities
 to reuse any homework and lab manual materials that they created that centers on 
 the use of Virtual FlyLab. I'm implementing all of the  same features:
 
-* Dominance / Recessiveness
+* Dominance / Recessiveness **[done]**
 * Lethal alleles **[done]**
 * Sex-linked traits (Virtual FlyLab only has X-linked traits) **[done]**
 * Recombination 
