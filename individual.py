@@ -236,6 +236,12 @@ class Individual(object):
 		newGenome[0] = self.getGamete()
 		newGenome[1] = o.getGamete()
 
+		# For consistency's sake, y chromo should always be on second pair
+		if 'ych' in newGenome[0][0]:
+			temp = newGenome[0][0]
+			newGenome[0][0] = newGenome[1][0]
+			newGenome[1][0] = temp
+
 		return Individual(newGenome)
 
 
@@ -313,15 +319,15 @@ class Individual(object):
 
 
 	# ======================================================== #
-	#                  Phenotype (Dom/Rec) 		               #
+	#           Phenotype (Dominance/Recessiveness)            #
 	# ======================================================== #
 
-	# FIXME: Needs work. Consider alphabetizing
-	def getPhenotypeStr(self):
-		"""Get a phenotype string for the individual based on 
-		dominance/recessiveness."""
+	def getPhenotype(self):
+		"""Get a phenotype list for the individual based on dominance/
+		recessiveness."""
 		ret = ""
 		alleles = {}
+		pheno = []
 
 		for x in self.chromos[0] + self.chromos[1]:
 			for abbr in x:
@@ -338,13 +344,19 @@ class Individual(object):
 
 		for abbr, num in alleles.items():
 			if num > 1:
-				ret += abbr + "/"
+				pheno.append(abbr)
 				continue
 			if abbr in Allele.dominants:
-				ret += abbr + "/"
+				pheno.append(abbr)
 				continue
-		
-		return ret[:-1]
+
+		pheno.sort()
+		return pheno
+
+	def getPhenotypeStr(self):
+		"""Get a phenotype string for the individual based on dominance/
+		recessiveness."""
+		return '/'.join(self.getPhenotype())
 
 
 	# ======================================================== #
@@ -394,7 +406,8 @@ class Individual(object):
 # =============================
 
 class Indiv(Individual):
-	pass
+	def getPheno(self):
+		return self.getPhenotype()
 
 def Male():
 	return Indiv(sex='m')
