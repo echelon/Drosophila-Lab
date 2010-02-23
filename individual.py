@@ -47,14 +47,15 @@ class Individual(object):
 		if type(sex) == str:
 			sex = sex.lower()
 
+		if sex and chromos:
+			raise Exception, "Cannot supply both DiploSet and sex parameter."
+
 		if sex and (sex != 'm' and sex != 'f'):
 			raise Exception, "Invalid sex specified."
 
 		if chromos and type(chromos) != DiploSet:
 			raise Exception, "Invalid DiploSet provided for individual"
 
-		if sex and chromos:
-			raise Exception, "Cannot supply both DiploSet and sex parameter."
 
 		self.chromos = chromos
 		self.sex = None 		# Cache of X-balance sex
@@ -133,7 +134,7 @@ class Individual(object):
 
 
 	# ======================================================== #
-	#              Gene-setting related methods                #
+	#          Manual Gene-setting related methods             #
 	# ======================================================== #
 
 	def setAs(self, alleleAbbr):
@@ -203,7 +204,7 @@ class Individual(object):
 	#                  Mating of individuals                   #
 	# ======================================================== #
 	
-	def mate(self, other, num = 3, vary = False): 
+	def mate(self, other, num = 1, vary = False): 
 		"""Mate the individual with another from the opposite sex."""
 
 		if self.sex == other.sex:
@@ -214,9 +215,13 @@ class Individual(object):
 			diff = int(random.gauss(0, 12))
 			num += diff
 
+		# Produce all but double-lethal offspring
 		progeny = []
 		for i in range(num):
-			progeny.append(self.__doMate(other))
+			indiv = self.__doMate(other)
+			if indiv.isDead():
+				continue
+			progeny.append(indiv)
 
 		return progeny
 
@@ -256,6 +261,63 @@ class Individual(object):
 		return hap
 
 
+	# ======================================================== #
+	#                 Genotype and Lethality                   #
+	# ======================================================== #
+
+	def numCopies(self, alleleAbbr):
+		"""Return the number of copies of the allele."""
+
+		allele = Allele.get(alleleAbbr.upper())
+		chromo = allele.onChromo
+
+		cnt = 0
+
+		# Autosomal
+		if chromo in [2, 3, 4]:
+			if allele.abbr in self.chromos[0][chromo-1]:
+				cnt += 1
+			if allele.abbr in self.chromos[1][chromo-1]:
+				cnt += 1
+
+			return cnt
+
+		# Sex-linked
+		if allele.abbr in self.chromos[0][0]:
+			cnt += 1
+
+		if not self.isFemale():
+			return cnt
+
+		if allele.abbr in self.chromos[0][1]:
+			cnt += 1
+
+		return cnt
+
+
+	def isDead(self):
+		"""The individual is dead if it has any two lethal allele copies."""
+
+		lethals = Allele.getLethals() 
+
+		for al in lethals:
+			num = self.numCopies(al.abbr)
+			if num > 1:
+				return True
+
+			# Hemizygous males
+			if type(al.onChromo) == str and num > 0 and not self.isFemale(): 
+				return True
+
+		return False
+
+
+	# ======================================================== #
+	#                  Phenotype (Dom/Rec) 		               #
+	# ======================================================== #
+
+	# TODO
+
 
 	# ======================================================== #
 	#              Representation, etc. methods                #
@@ -267,35 +329,9 @@ class Individual(object):
 		return ret
 
 
-
-
-	# =============== TODO / FIXME / UPDATE ================== #
-
-	def mateMany(self, o, numOffspring = 1000):
-
-		# Vary the number of offspring slightly 
-		diff = int(random.gauss(0, 12))
-		numOffspring += diff
-
-		progeny = []
-		for i in range(numOffspring):
-			progeny.append(self.mate(other))
-
-		return progeny
-
-
 	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
 	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
 	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
-
-
-
-
-
-	def isDead(self):
-		"""Check for the presence of two lethal alleles."""
-		return False # TODO
-
 
 	def getGenotypeStr(self):
 		# TODO: THIS IS A TEMPORARY METHOD
@@ -325,7 +361,18 @@ class Individual(object):
 	#	return ret
 	#
 
+# =============================
+# Console time-saving shortcuts
+# =============================
+
 class Indiv(Individual):
-	"""This is a shortcut name for use in the console only."""
 	pass
+
+def Male():
+	return Indiv(sex='m')
+
+def Female():
+	return Indiv(sex='f')
+
+
 

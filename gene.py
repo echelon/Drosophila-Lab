@@ -30,8 +30,13 @@
 
 class Allele(object):
 
-	# Static dictionary of all alleles instantiated 
+	# Static dictionary of all alleles {'abbr' => Allele}
 	alleles = {}
+
+	# Static dictionaries of all lethal/dominant alleles {'abbr' => Allele}
+	# (For faster lookup.)
+	dominants = {}
+	lethals = {}
 
 	@classmethod
 	def get(cls, abbr):
@@ -42,6 +47,18 @@ class Allele(object):
 		return abbr.upper() in cls.alleles
 
 	@classmethod
+	def getAll(cls):
+		return self.alleles.values()
+
+	@classmethod
+	def getLethals(cls):
+		return cls.lethals.values()
+
+	@classmethod
+	def getDominants(cls):
+		return cls.dominants.values()
+
+	@classmethod
 	def list(cls):
 		for tr in Trait.traits.values():
 			print "%s" % tr.name
@@ -50,6 +67,10 @@ class Allele(object):
 			print ""
 
 	def __init__(self, name, abbr, trait, onChromo, mapPos, *effects):
+		"""Allele CTOR.
+		onChromo can be ['x', 2, 3, 4]
+		Effects can contain a string of "dominant" and/or "lethal".
+		"""
 
 		if type(trait) != Trait:
 			raise TypeError, "Trait must be a Trait object." # TODO: String abbr ok
@@ -75,8 +96,15 @@ class Allele(object):
 			elif e == 'lethal':
 				self.lethal = True
 
-		Allele.alleles[abbr] = self
 		trait.addAllele(self)
+		Allele.alleles[abbr] = self
+
+		if self.lethal:
+			Allele.lethals[abbr] = self
+
+		if self.dominant:
+			Allele.dominants[abbr] = self
+
 
 	def isDominant(self):
 		return self.dominant
