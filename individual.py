@@ -316,7 +316,35 @@ class Individual(object):
 	#                  Phenotype (Dom/Rec) 		               #
 	# ======================================================== #
 
-	# TODO
+	# FIXME: Needs work. Consider alphabetizing
+	def getPhenotypeStr(self):
+		"""Get a phenotype string for the individual based on 
+		dominance/recessiveness."""
+		ret = ""
+		alleles = {}
+
+		for x in self.chromos[0] + self.chromos[1]:
+			for abbr in x:
+				if abbr not in alleles:
+					alleles[abbr] = 1
+				else:
+					alleles[abbr] += 1
+
+		try:
+			alleles.pop('xch')
+			alleles.pop('ych')
+		except KeyError:
+			pass
+
+		for abbr, num in alleles.items():
+			if num > 1:
+				ret += abbr + "/"
+				continue
+			if abbr in Allele.dominants:
+				ret += abbr + "/"
+				continue
+		
+		return ret[:-1]
 
 
 	# ======================================================== #
