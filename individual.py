@@ -158,6 +158,9 @@ class Individual(object):
 		if type(allele) != Allele:
 			raise Exception, "Must supply allele or allele abbreviation."
 
+		if self.numCopies(allele) > 0:
+			raise Exception, "Cannot set allele if already present."
+
 		chromo = allele.onChromo
 		lethal = allele.isLethal()		
 
