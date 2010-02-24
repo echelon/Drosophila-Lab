@@ -107,12 +107,12 @@ class Individual(object):
 		# This *must* be done to ensure no errors in sex-linkage crop up
 		# For consistency, First Chromo I is always X, Second is either X or Y
 
-		self.chromos[0][0] = Chromo(sex='x')
+		self.chromos[0][0] = Chromo(kind='x')
 
 		if sex == 'm':
-			self.chromos[1][0] = Chromo(sex='y')
+			self.chromos[1][0] = Chromo(kind='y')
 		else:
-			self.chromos[1][0] = Chromo(sex='x')
+			self.chromos[1][0] = Chromo(kind='x')
 
 	def __cacheSex(self):
 		"""Calculate sex based on X-balance system and cache the result.

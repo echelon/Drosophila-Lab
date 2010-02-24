@@ -24,21 +24,25 @@
 #	You should have received a copy of the GNU Affero General Public License
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-from gene import Allele, Trait
 from copy import copy
+
+from gene import Allele, Trait
+from defs import CHROMOSOME_LENGTHS
 
 class Chromo(list):
 	"""This class represents a chromosome or chromatid.
 	It is an extension of the list data structure."""
 
-	def __init__(self, sex=None):
+	def __init__(self, kind=None):
 		"""Chromo CTOR."""
 
 		self.type = None	# None, X or Y
 
-		if sex in ['x', 'X', 'f', 'F']:
+		if kind in [2, 3, 4]:
+			self.type = kind
+		elif kind in ['x', 'X', 'f', 'F']:
 			self.type = 'x'
-		elif sex in ['y', 'Y', 'm', 'M']:
+		elif kind in ['y', 'Y', 'm', 'M']:
 			self.type = 'y'
 
 		# TODO
@@ -52,6 +56,12 @@ class Chromo(list):
 	def crossover(self, o):
 		"""Crossover with another chromatid. 
 		Both chromatids are altered in-place"""
+
+		ky = lambda x: x.mapPos
+
+		self.sort(key=ky)
+		o.sort(key=ky)
+
 		pass # TODO
 
 	def getCopy(self):
