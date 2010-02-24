@@ -262,9 +262,16 @@ class Individual(object):
 		hap = HaploSet()
 
 		# XXX TODO FIXME: Female crossover!!
+		# XXX XXX: Verify this is correct crossover! 
+		# XXX: Needs correct probabilities, etc.
+		# XXX: Double crossover!!
 		if self.isFemale():
+			sis = range(2)
 			for i in range(4):
-				hap[i] = self.chromos[random.randint(0, 1)][i].getCopy()
+				sis[0] = self.chromos[0][i].getCopy()
+				sis[1] = self.chromos[1][i].getCopy()
+				sis[0].crossover(sis[1])
+				hap[i] = sis[random.randint(0, 1)]
 
 		# Males do not cross over.
 		# Note the 50/50 chance for a male returning the 'X' or 'Y' chromosome.		
@@ -273,23 +280,6 @@ class Individual(object):
 				hap[i] = self.chromos[random.randint(0, 1)][i].getCopy()
 
 		return hap
-
-
-	# TODO
-	def getCrossoverGamete(self):
-
-		hap = HaploSet()
-
-		for i in range(4):
-			r = random.randint(0, 1) # Choose one copy at random
-			sis1 = self.chromos[r][i]
-			sis2 = self.chromos[r][i]
-
-			sis1.sort(key=lambda x: x.mapPos)
-			
-		# TODO
-			
-
 
 
 	# ======================================================== #

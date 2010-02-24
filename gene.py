@@ -120,7 +120,6 @@ class Allele(object):
 	def isLethal(self):
 		return self.lethal
 
-
 	def __repr__(self):
 		"""String representation of Allele."""
 		#return "%s <%s/%s>" % (self.name, self.trait.name, self.abbr)

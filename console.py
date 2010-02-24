@@ -46,7 +46,7 @@ def create():
 	globals()['b'] = b
 	globals()['c'] = c
 
-#create()
+create()
 
 
 
