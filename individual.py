@@ -30,6 +30,7 @@ import defs
 from defs import CHROMOSOME_LENGTHS
 
 from chromoset import HaploSet, DiploSet
+from chromosome import Chromo
 
 class Individual(object):
 
@@ -104,15 +105,14 @@ class Individual(object):
 
 		# Remove all genes from both pairs of Chromosome I
 		# This *must* be done to ensure no errors in sex-linkage crop up
-		self.chromos[0][0] = []
-		self.chromos[1][0] = []
-
 		# For consistency, First Chromo I is always X, Second is either X or Y
-		self.chromos[0][0].append('xch')
+
+		self.chromos[0][0] = Chromo(sex='x')
+
 		if sex == 'm':
-			self.chromos[1][0].append('ych')
+			self.chromos[1][0] = Chromo(sex='y')
 		else:
-			self.chromos[1][0].append('xch')
+			self.chromos[1][0] = Chromo(sex='x')
 
 	def __cacheSex(self):
 		"""Calculate sex based on X-balance system and cache the result.
@@ -122,9 +122,9 @@ class Individual(object):
 
 		# Implementation of X-balance system of sex determinancy
 		cnt = 0
-		if 'xch' in self.chromos[0][0]:
+		if self.chromos[0][0].isX():
 			cnt += 1
-		if 'xch' in self.chromos[1][0]:
+		if self.chromos[1][0].isX():
 			cnt += 1
 
 		if cnt >= 2:
@@ -237,7 +237,7 @@ class Individual(object):
 		newGenome[1] = o.getGamete()
 
 		# For consistency's sake, y chromo should always be on second pair
-		if 'ych' in newGenome[0][0]:
+		if newGenome[0][0].isY():
 			temp = newGenome[0][0]
 			newGenome[0][0] = newGenome[1][0]
 			newGenome[1][0] = temp

@@ -24,6 +24,8 @@
 #	You should have received a copy of the GNU Affero General Public License
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+from chromosome import Chromo
+
 class HaploSet(object):
 
 	"""A haploid set of chromosomes. That is, only one of each chromosome."""
@@ -31,7 +33,7 @@ class HaploSet(object):
 	def __init__(self, chromos = None):
 
 		if not chromos:
-			chromos = [[] for i in range(4)]
+			chromos = [Chromo() for i in range(4)]
 
 		if len(chromos) != 4:
 			raise Exception, "Improper number of chromosomes"
@@ -73,10 +75,10 @@ class DiploSet(object):
 		generated."""
 
 		if not pair1:
-			pair1 = [[] for i in range(4)]
+			pair1 = [Chromo() for i in range(4)]
 
 		if not pair2:
-			pair2 = [[] for i in range(4)]
+			pair2 = [Chromo() for i in range(4)]
 			
 		if len(pair1) != 4 or len(pair2) != 4:
 			raise Exception, "Improper number of chromosomes"
@@ -110,8 +112,14 @@ class DiploSet(object):
 		for i in range(4):
 			ret += "\t%d  " % (i+1)
 			ret += str(self.chromos[0][i])
+			if self.chromos[0][i].isX():
+				ret += " (X)"
 			ret += "\t"
 			ret += str(self.chromos[1][i])
+			if self.chromos[1][i].isX():
+				ret += " (X)"
+			elif self.chromos[1][i].isY():
+				ret += " (Y)"
 			ret += "\n"
 		return ret + "    \>"
 

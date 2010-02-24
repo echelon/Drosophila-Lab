@@ -7,7 +7,7 @@ from individual import Individual
 from individual import Indiv, Male, Female # Shortcuts
 from gene import Trait, Allele
 from defs import CHROMOSOME_LENGTHS
-#from sex import Male, Female
+from chromosome import Chromo
 
 def clear():
 	print "\n"*40
@@ -46,7 +46,7 @@ def create():
 	globals()['b'] = b
 	globals()['c'] = c
 
-create()
+#create()
 
 
 
