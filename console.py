@@ -6,6 +6,7 @@ from chromoset import HaploSet, DiploSet
 from individual import Individual
 from individual import Indiv, Male, Female # Shortcuts
 from gene import Trait, Allele
+from defs import CHROMOSOME_LENGTHS
 #from sex import Male, Female
 
 def clear():

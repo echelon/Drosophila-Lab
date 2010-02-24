@@ -27,6 +27,7 @@
 import random
 from gene import Trait, Allele
 import defs
+from defs import CHROMOSOME_LENGTHS
 
 from chromoset import HaploSet, DiploSet
 
@@ -200,7 +201,7 @@ class Individual(object):
 
 
 	# ======================================================== #
-	#                  Mating of individuals                   #
+	#            Mating of individuals / Meiosis               #
 	# ======================================================== #
 	
 	def mate(self, other, num = 1, vary = False): 
@@ -264,6 +265,23 @@ class Individual(object):
 
 
 		return hap
+
+
+	# TODO
+	def getCrossoverGamete(self):
+
+		hap = HaploSet()
+
+		for i in range(4):
+			r = random.randint(0, 1) # Choose one copy at random
+			sis1 = self.chromos[r][i]
+			sis2 = self.chromos[r][i]
+
+			sis1.sort(key=lambda x: x.mapPos)
+			
+		# TODO
+			
+
 
 
 	# ======================================================== #

@@ -38,6 +38,9 @@ class Allele(object):
 	dominants = {}
 	lethals = {}
 
+	# Map of allele chromosome positions {(ch#, mu) => Allele} 
+	positions = {}
+
 	@classmethod
 	def get(cls, abbr):
 		return cls.alleles[abbr.upper()]
@@ -105,6 +108,11 @@ class Allele(object):
 		if self.dominant:
 			Allele.dominants[abbr] = self
 
+
+	def __del__(self):
+		"""Can't delete any alleles created."""
+		import sys
+		sys.exit("Fatal error: Cannot delete alleles.")
 
 	def isDominant(self):
 		return self.dominant
