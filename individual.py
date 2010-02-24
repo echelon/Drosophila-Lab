@@ -137,13 +137,27 @@ class Individual(object):
 	#          Manual Gene-setting related methods             #
 	# ======================================================== #
 
-	def setAs(self, alleleAbbr):
+	def reset(self):
+		"""Reset the individual to wildtype, only preserve sex."""
+		self.__cacheSex() # Make sure sex is cached
+
+		for i in range(4):
+			self.chromos[0][i] = Chromo()
+			self.chromos[1][i] = Chromo()
+
+		self.__setSex(self.sex)
+
+	def setAs(self, allele):
 		"""Set HOMOZYGOUS for the allele, unless lethal or sex-linked.
 		Supply the allele abbreviation for lookup.
 		Returns False if the allele couldn't be set (x-linked lethal for males.)
 		"""
+		if type(allele) == str:
+			allele = Allele.get(allele.upper())
 
-		allele = Allele.get(alleleAbbr.upper())
+		if type(allele) != Allele:
+			raise Exception, "Must supply allele or allele abbreviation."
+
 		chromo = allele.onChromo
 		lethal = allele.isLethal()		
 
@@ -153,11 +167,11 @@ class Individual(object):
 
 		# Autosomal genes
 		if chromo in [2, 3, 4]:
-			self.chromos[0][chromo-1].append(allele.abbr)
+			self.chromos[0][chromo-1].append(allele)
 			if not lethal:
-				self.chromos[1][chromo-1].append(allele.abbr)
+				self.chromos[1][chromo-1].append(allele)
 
-			return True
+			return
 
 		# X-linked genes
 		if not self.sex:
@@ -165,39 +179,31 @@ class Individual(object):
 
 		# Can't manually create X-linked lethal males!
 		if self.sex == 'm' and lethal:
-			return False
+			return
 
-		self.chromos[0][0].append(allele.abbr)
+		self.chromos[0][0].append(allele)
 
 		if self.sex == 'f' and not lethal:
-			self.chromos[1][0].append(allele.abbr)
+			self.chromos[1][0].append(allele)
 
-		return True
-				
+		return
 
-	def setWildFor(self, traitAbbr):
-		"""Basically unsets any allele of a trait, returning to NULL/wildtype
-		state."""
+	def setWildFor(self, trait):
+		"""Basically unsets any allele of a trait, returning to the 
+		NULL/wildtype state."""
+		if type(trait) == str:
+			trait = Trait.get(traitAbbr.upper())
 
-		trait = Trait.get(traitAbbr.upper())
+		if type(trait) != Trait:
+			raise Exception, "Must supply Trait or trait abbreviation."
 
 		# Not very efficient -- don't rely on this
 		for al in trait.alleles.values():
 			for i in range(4):
 				if al.abbr in self.chromos[0][i]:
-					self.chromos[0][i].remove(al.abbr)
+					self.chromos[0][i].remove(al)
 				if al.abbr in self.chromos[1][i]:
-					self.chromos[1][i].remove(al.abbr)
-
-	def reset(self):
-		"""Reset the individual to wildtype, only preserve sex."""
-		self.__cacheSex() # Make sure sex is cached
-
-		for i in range(4):
-			self.chromos[0][i] = []
-			self.chromos[1][i] = []
-
-		self.__setSex(self.sex)
+					self.chromos[1][i].remove(al)
 
 
 	# ======================================================== #
@@ -225,7 +231,6 @@ class Individual(object):
 
 		return progeny
 
-
 	def __doMate(self, o):
 		"""Create a single offspring."""
 
@@ -249,20 +254,20 @@ class Individual(object):
 		"""Create a gamete from the individual."""
 
 		# XXX TODO: Produce 4, but only return 1.  Do actual meiosis.
+		# XXX XXX XXX: Ensure these are being *copied!*
 
 		hap = HaploSet()
 
 		# XXX TODO FIXME: Female crossover!!
 		if self.isFemale():
 			for i in range(4):
-				hap[i] = self.chromos[random.randint(0, 1)][i]
+				hap[i] = self.chromos[random.randint(0, 1)][i].getCopy()
 
 		# Males do not cross over.
 		# Note the 50/50 chance for a male returning the 'X' or 'Y' chromosome.		
 		if not self.isFemale():
 			for i in range(4):
-				hap[i] = self.chromos[random.randint(0, 1)][i]
-
+				hap[i] = self.chromos[random.randint(0, 1)][i].getCopy()
 
 		return hap
 
@@ -288,35 +293,37 @@ class Individual(object):
 	#                 Genotype and Lethality                   #
 	# ======================================================== #
 
-	def numCopies(self, alleleAbbr):
+	def numCopies(self, allele):
 		"""Return the number of copies of the allele."""
+		if type(allele) == str:
+			allele = Allele.get(allele.upper())
 
-		allele = Allele.get(alleleAbbr.upper())
+		if type(allele) != Allele:
+			raise Exception, "Must supply Allele or allele abbreviation."
+
 		chromo = allele.onChromo
-
 		cnt = 0
 
 		# Autosomal
 		if chromo in [2, 3, 4]:
-			if allele.abbr in self.chromos[0][chromo-1]:
+			if allele in self.chromos[0][chromo-1]:
 				cnt += 1
-			if allele.abbr in self.chromos[1][chromo-1]:
+			if allele in self.chromos[1][chromo-1]:
 				cnt += 1
 
 			return cnt
 
 		# Sex-linked
-		if allele.abbr in self.chromos[0][0]:
+		if allele in self.chromos[0][0]:
 			cnt += 1
 
 		if not self.isFemale():
 			return cnt
 
-		if allele.abbr in self.chromos[0][1]:
+		if allele in self.chromos[0][1]:
 			cnt += 1
 
 		return cnt
-
 
 	def isDead(self):
 		"""The individual is dead if it has any two lethal allele copies."""
@@ -324,7 +331,7 @@ class Individual(object):
 		lethals = Allele.getLethals() 
 
 		for al in lethals:
-			num = self.numCopies(al.abbr)
+			num = self.numCopies(al)
 			if num > 1:
 				return True
 
@@ -347,17 +354,11 @@ class Individual(object):
 		pheno = []
 
 		for x in self.chromos[0] + self.chromos[1]:
-			for abbr in x:
-				if abbr not in alleles:
-					alleles[abbr] = 1
+			for al in x:
+				if al.abbr not in alleles:
+					alleles[al.abbr] = 1
 				else:
-					alleles[abbr] += 1
-
-		try:
-			alleles.pop('xch')
-			alleles.pop('ych')
-		except KeyError:
-			pass
+					alleles[al.abbr] += 1
 
 		for abbr, num in alleles.items():
 			if num > 1:
@@ -386,38 +387,6 @@ class Individual(object):
 		return ret
 
 
-	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
-	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
-	####### ========= TODO FIXME UPDATE THESE TODO FIXME =========== ###########
-
-	def getGenotypeStr(self):
-		# TODO: THIS IS A TEMPORARY METHOD
-		st = "<"
-		for gene in self.chromosomes[0].keys():
-			st += str(self.chromosomes[0][gene]) + "/"
-			st += str(self.chromosomes[1][gene]) + "; "
-		st = st[:-2] + ">"
-		return st
-
-
-	#def __repr__(self):
-	#	"""String representation of the individual"""
-	#	sexes = ['Male', 'Female']
-	#	ret = sexes[self.sex]
-	#
-	#	if not self.chromosomes[0]:
-	#		ret += " <+>"
-	#		return ret
-	#
-	#	ret += " <"
-	#	for gene in self.chromosomes[0].keys():
-	#		ret += str(self.chromosomes[0][gene].abbr) + "/"
-	#		ret += str(self.chromosomes[1][gene].abbr) + "; "
-	#
-	#	ret = ret[:-2] + ">"
-	#	return ret
-	#
-
 # =============================
 # Console time-saving shortcuts
 # =============================
@@ -431,6 +400,4 @@ def Male():
 
 def Female():
 	return Indiv(sex='f')
-
-
 
