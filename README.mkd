@@ -28,9 +28,9 @@ the use of Virtual FlyLab. I'm implementing all of the  same features:
 
 * Dominance / Recessiveness **[done]**
 * Lethal alleles **[done]**
-* Sex-linked traits (Virtual FlyLab only has X-linked traits) **[done]**
-* Recombination **[done - needs verification]**
-* Gene mapping **[done - needs verification]**
+* X-linked traits **[done]**
+* Recombination **[coded/needs verification]**
+* Gene mapping **[coded/needs verification]**
 * Chi-square analysis
 * Epistasis
 
