@@ -25,6 +25,7 @@
 #	along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 from copy import copy
+import random
 
 from gene import Allele, Trait
 from defs import CHROMOSOME_LENGTHS
@@ -56,13 +57,28 @@ class Chromo(list):
 	def crossover(self, o):
 		"""Crossover with another chromatid. 
 		Both chromatids are altered in-place"""
+		if o.type != self.type:
+			raise Exception, "Cannot crossover different types of chromosome."
 
-		ky = lambda x: x.mapPos
+		cno = self.type
+		if type(cno) != int:
+			cno = 1
 
-		self.sort(key=ky)
-		o.sort(key=ky)
+		crossPoint = random.randint(0, CHROMOSOME_LENGTHS[cno-1])
 
-		pass # TODO
+		toSelf = []
+		toOther = []
+
+		for al in self:
+			if al.mapPos > crossPoint:
+				toOther.append(self.pop(self.index(al)))
+
+		for al in o:
+			if al.mapPos > crossPoint:
+				toSelf.append(o.pop(o.index(al)))
+
+		self += toSelf
+		o += toOther
 
 	def getCopy(self):
 		"""Get a copy of the chromosome."""

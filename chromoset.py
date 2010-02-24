@@ -108,6 +108,12 @@ class DiploSet(object):
 
 
 	def __str__(self):
+
+		ky = lambda x: x.mapPos
+		for i in range(4):
+			self.chromos[0][i].sort(key=ky)
+			self.chromos[1][i].sort(key=ky)
+
 		ret = "<DiploSet: \n"
 		for i in range(4):
 			ret += "\t%d  " % (i+1)

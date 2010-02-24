@@ -123,7 +123,8 @@ class Allele(object):
 
 	def __repr__(self):
 		"""String representation of Allele."""
-		return "%s <%s/%s>" % (self.name, self.trait.name, self.abbr)
+		#return "%s <%s/%s>" % (self.name, self.trait.name, self.abbr)
+		return self.abbr
 
 	def __str__(self):
 		ret = "\n%s (%s) allele\n" % (self.name, self.abbr)
