@@ -8,6 +8,7 @@ from individual import Indiv, Male, Female # Shortcuts
 from gene import Trait, Allele
 from defs import CHROMOSOME_LENGTHS
 from chromosome import Chromo
+from statistics import getStats
 
 def clear():
 	print "\n"*40
@@ -30,21 +31,13 @@ def countSex(indivs):
 	print "Male: %d, Female: %d, Total: %d" % (male, female, len(indivs))
 
 def create():
-	a = Indiv()
-	b = Indiv(sex='m')
-	c = Indiv()
+	a = Male()
+	b = Female()
 
-	setC = [
-		'bl', 'y', 's', 't', # Body colors
-
-		'b', 'pr', 'ss', 'sv'
-	]
-	for x in setC:
-		c.setAs(x)
+	a.setAs('pr')
 
 	globals()['a'] = a
 	globals()['b'] = b
-	globals()['c'] = c
 
 create()
 

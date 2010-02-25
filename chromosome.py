@@ -46,8 +46,6 @@ class Chromo(list):
 		elif kind in ['y', 'Y', 'm', 'M']:
 			self.type = 'y'
 
-		# TODO
-
 	def isX(self):
 		return self.type == 'x'
 
@@ -57,8 +55,14 @@ class Chromo(list):
 	def crossover(self, o):
 		"""Crossover with another chromatid. 
 		Both chromatids are altered in-place"""
+		if type(o) != Chromo:
+			raise Exception, \
+				"Chromo.crossover: Must crossover with another Chromo type."
+
 		if o.type != self.type:
-			raise Exception, "Cannot crossover different types of chromosome."
+			raise Exception, \
+				"Cannot crossover different types of chromosome: %s and %s." % \
+				(str(self.type), str(o.type)) 
 
 		cno = self.type
 		if type(cno) != int:

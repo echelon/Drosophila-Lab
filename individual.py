@@ -271,7 +271,7 @@ class Individual(object):
 				sis[0] = self.chromos[0][i].getCopy()
 				sis[1] = self.chromos[1][i].getCopy()
 				sis[0].crossover(sis[1])
-				hap[i] = sis[random.randint(0, 1)]
+				hap[i] = sis[random.randint(0, 1)] # Choose one crossover
 
 		# Males do not cross over.
 		# Note the 50/50 chance for a male returning the 'X' or 'Y' chromosome.		
@@ -367,7 +367,10 @@ class Individual(object):
 	def getPhenotypeStr(self):
 		"""Get a phenotype string for the individual based on dominance/
 		recessiveness."""
-		return '/'.join(self.getPhenotype())
+		pheno = self.getPhenotype()
+		if not pheno:
+			return "+"
+		return '/'.join(pheno)
 
 
 	# ======================================================== #
